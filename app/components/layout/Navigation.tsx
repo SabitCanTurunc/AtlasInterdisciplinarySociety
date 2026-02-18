@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
@@ -43,8 +44,14 @@ const Navigation = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('#hero'); }} className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#d4af37' }}>
-                <span className="text-[#0a1628] font-bold text-xl">A</span>
+              <div className="relative w-14 h-14 flex items-center justify-center bg-white rounded-full p-1">
+                <Image
+                  src="/images/general/atlaslogo.png"
+                  alt="Atlas Logo"
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div className="hidden sm:block">
                 <span className="text-lg font-bold text-white block leading-tight">A.I.S.</span>

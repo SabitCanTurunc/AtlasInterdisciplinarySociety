@@ -32,7 +32,15 @@ const Contact = () => {
   return (
     <section ref={sectionRef} id="iletisim" className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
       {/* Background */}
-      <div className="contact-bg absolute inset-0" style={{ background: 'linear-gradient(135deg, #0a1628 0%, #111d32 50%, #1e3a5f 100%)' }} />
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/images/general/ahtapot.jpeg')" }}
+        />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 bg-[#0a1628]/80" />
+      </div>
 
       {/* Gradient accent */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-30 blur-[120px]"

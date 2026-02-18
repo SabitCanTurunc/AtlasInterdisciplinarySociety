@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Instagram, Linkedin, Mail, Globe } from 'lucide-react';
@@ -7,16 +8,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Custom TikTok Icon Component
 const TiktokIcon = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width="24" 
-    height="24" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={className}
   >
     <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
@@ -70,8 +71,14 @@ const Footer = () => {
           {/* Logo + Tagline */}
           <div className="col-span-2 md:col-span-4 lg:col-span-2 footer-logo">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#d4af37' }}>
-                <span className="text-[#0a1628] font-bold text-xl">A</span>
+              <div className="relative w-14 h-14 flex items-center justify-center bg-white rounded-full p-1">
+                <Image
+                  src="/images/general/atlaslogo.png"
+                  alt="Atlas Logo"
+                  width={56}
+                  height={56}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="text-xl font-bold text-white">A.I.S.</span>
             </div>
