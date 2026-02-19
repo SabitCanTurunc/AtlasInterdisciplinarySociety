@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  Brain, Code, HeartPulse, Palette, FlaskConical, Stethoscope, Briefcase,
+  Brain, Code, HeartPulse, FlaskConical, Stethoscope, Briefcase,
   Mic2, Activity, Gamepad2, Laptop, MonitorPlay, Zap, PencilRuler
 } from 'lucide-react';
 
@@ -103,11 +103,12 @@ const Disciplines = () => {
 
   const chunks = useMemo(() => {
     let currentIndex = 0;
-    return layout.map(count => {
-      const chunk = disciplines.slice(currentIndex, currentIndex + count);
+    const result = [];
+    for (const count of layout) {
+      result.push(disciplines.slice(currentIndex, currentIndex + count));
       currentIndex += count;
-      return chunk;
-    });
+    }
+    return result;
   }, [layout]);
 
   return (

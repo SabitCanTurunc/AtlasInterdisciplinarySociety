@@ -1,5 +1,8 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Instagram, Linkedin, Mail, Globe } from 'lucide-react';
@@ -46,9 +49,30 @@ const Footer = () => {
   }, []);
 
   const linkColumns = [
-    { title: 'Kurumsal', links: ['Hakkımızda', 'Vizyon', 'Ekip', 'Kariyer'] },
-    { title: 'Programlar', links: ['Fakülteler', 'Projeler', 'Etkinlikler', 'Araştırma'] },
-    { title: 'İletişim', links: ['Bize Ulaşın', 'Üyelik', 'SSS', 'Basın'] },
+    {
+      title: 'Kurumsal', links: [
+        { label: 'Hakkımızda', href: '/about' },
+        { label: 'Vizyon', href: '/about' },
+        { label: 'Ekip', href: '/team' },
+        { label: 'Kariyer', href: '/join' }
+      ]
+    },
+    {
+      title: 'Programlar', links: [
+        { label: 'Fakülteler', href: '/disciplines' },
+        { label: 'Projeler', href: '/projects' },
+        { label: 'Etkinlikler', href: '/events' },
+        { label: 'Araştırma', href: '/publications' }
+      ]
+    },
+    {
+      title: 'İletişim', links: [
+        { label: 'Bize Ulaşın', href: '/contact' },
+        { label: 'Üyelik', href: '/join' },
+        { label: 'SSS', href: '/contact' },
+        { label: 'Basın', href: '/contact' }
+      ]
+    },
   ];
 
   const socialLinks = [
@@ -103,7 +127,7 @@ const Footer = () => {
               <ul className="space-y-3">
                 {column.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
-                    <a href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">{link}</a>
+                    <Link href={link.href} className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">{link.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -118,8 +142,8 @@ const Footer = () => {
               © 2026 ATLAS INTERDISCIPLINARY SOCIETY. Tüm hakları saklıdır.
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">Gizlilik Politikası</a>
-              <a href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">Kullanım Koşulları</a>
+              <Link href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">Gizlilik Politikası</Link>
+              <Link href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">Kullanım Koşulları</Link>
             </div>
           </div>
         </div>

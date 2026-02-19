@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Quote, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -162,11 +163,10 @@ const Testimonials = () => {
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === activeIndex
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${index === activeIndex
                       ? 'bg-[#a1f65e] w-8'
                       : 'bg-[#1d2229]/20 hover:bg-[#1d2229]/40'
-                  }`}
+                    }`}
                 />
               ))}
             </div>
@@ -184,23 +184,22 @@ const Testimonials = () => {
                 return (
                   <div
                     key={index}
-                    className={`absolute inset-0 transition-all duration-600 preserve-3d ${
-                      isActive
+                    className={`absolute inset-0 transition-all duration-600 preserve-3d ${isActive
                         ? 'opacity-100 translate-x-0 rotate-y-0 z-20'
                         : isPrev
-                        ? 'opacity-50 -translate-x-[30%] rotate-y-[25deg] z-10'
-                        : isNext
-                        ? 'opacity-50 translate-x-[30%] rotate-y-[-25deg] z-10'
-                        : 'opacity-0 translate-x-0 rotate-y-0 z-0'
-                    }`}
+                          ? 'opacity-50 -translate-x-[30%] rotate-y-[25deg] z-10'
+                          : isNext
+                            ? 'opacity-50 translate-x-[30%] rotate-y-[-25deg] z-10'
+                            : 'opacity-0 translate-x-0 rotate-y-0 z-0'
+                      }`}
                     style={{
                       transform: isActive
                         ? 'translateX(0) translateZ(50px) rotateY(0deg)'
                         : isPrev
-                        ? 'translateX(-30%) translateZ(-50px) rotateY(25deg)'
-                        : isNext
-                        ? 'translateX(30%) translateZ(-50px) rotateY(-25deg)'
-                        : 'translateX(0) translateZ(-100px) rotateY(0deg)',
+                          ? 'translateX(-30%) translateZ(-50px) rotateY(25deg)'
+                          : isNext
+                            ? 'translateX(30%) translateZ(-50px) rotateY(-25deg)'
+                            : 'translateX(0) translateZ(-100px) rotateY(0deg)',
                       transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
                     }}
                   >
@@ -229,10 +228,12 @@ const Testimonials = () => {
 
                       {/* Author */}
                       <div className="flex items-center gap-4 pt-6 border-t border-[#f0f0f0]">
-                        <img
+                        <Image
                           src={testimonial.image}
                           alt={testimonial.name}
-                          className="w-14 h-14 rounded-full object-cover ring-2 ring-[#a1f65e] ring-offset-2"
+                          width={56}
+                          height={56}
+                          className="rounded-full object-cover ring-2 ring-[#a1f65e] ring-offset-2"
                         />
                         <div>
                           <h4 className="font-bold text-[#1d2229]">

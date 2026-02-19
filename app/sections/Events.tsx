@@ -11,19 +11,19 @@ const Events = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Header Animation
-      gsap.fromTo('.events-header', 
+      gsap.fromTo('.events-header',
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.6, scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' } }
       );
 
       // Cards Animation
-      gsap.fromTo('.event-card', 
+      gsap.fromTo('.event-card',
         { opacity: 0, x: -20 },
         { opacity: 1, x: 0, duration: 0.5, stagger: 0.1, scrollTrigger: { trigger: '.events-grid', start: 'top 70%' } }
       );
 
       // Featured Event Animation
-      gsap.fromTo('.featured-event', 
+      gsap.fromTo('.featured-event',
         { opacity: 0, scale: 0.95 },
         { opacity: 1, scale: 1, duration: 0.8, scrollTrigger: { trigger: '.featured-event', start: 'top 80%' } }
       );
@@ -42,7 +42,7 @@ const Events = () => {
   return (
     <section ref={sectionRef} id="etkinlikler" className="section-padding relative overflow-hidden bg-[#f8fafc]">
       <div className="container-custom relative z-10">
-        
+
         {/* Header */}
         <div className="events-header text-center max-w-3xl mx-auto mb-16">
           <span className="section-label text-[#d4af37]">Etkinliklerimiz</span>
@@ -70,22 +70,22 @@ const Events = () => {
         {/* Featured Event / Promotion Area */}
         <div className="featured-event relative rounded-2xl overflow-hidden bg-[#0a1628] text-white">
           <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 bg-[url('/images/general/innovation.jpg')] bg-cover bg-center mix-blend-overlay" />
-          
+
           <div className="relative z-10 p-8 md:p-16 grid md:grid-cols-2 gap-12 items-center">
             <div>
               <span className="inline-block px-3 py-1 rounded-full bg-[#d4af37] text-[#0a1628] text-xs font-bold mb-4">
                 YAKLAŞAN ETKİNLİK
               </span>
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                Atlas Interdisciplinary Summit '26
+                Atlas Interdisciplinary Summit &apos;26
               </h3>
               <p className="text-slate-300 mb-8 text-lg">
                 Farklı disiplinlerden uzmanların bir araya geleceği, geleceğin teknolojilerinin tartışılacağı büyük zirveye hazır mısın?
               </p>
-              
+
               <div className="flex flex-wrap gap-4">
-                <a href="https://forms.google.com/..." target="_blank" rel="noopener noreferrer" 
-                   className="btn-primary bg-[#d4af37] text-[#0a1628] hover:bg-[#c4a030] border-none px-8 py-4 rounded-lg font-bold transition-all transform hover:scale-105">
+                <a href="https://forms.google.com/..." target="_blank" rel="noopener noreferrer"
+                  className="btn-primary bg-[#d4af37] text-[#0a1628] hover:bg-[#c4a030] border-none px-8 py-4 rounded-lg font-bold transition-all transform hover:scale-105">
                   Hemen Kayıt Ol
                 </a>
                 <button className="px-8 py-4 rounded-lg font-bold border border-white/20 hover:bg-white/10 transition-colors">

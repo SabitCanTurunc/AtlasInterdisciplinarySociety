@@ -1,10 +1,15 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,22 +20,21 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: 'Vizyon', href: '#vizyon' },
-    { label: 'Disiplinler', href: '#disiplinler' },
-    { label: 'Etkinlikler', href: '#etkinlikler' },
-    { label: 'Yayınlar', href: '#yayinlar' },
-    { label: 'Ekip', href: '#ekip' },
-    { label: 'İletişim', href: '#iletisim' },
-  ];
-
-  const scrollToSection = (href: string) => {
+  // Close mobile menu when route changes
+  useEffect(() => {
+    // eslint-disable-next-line
     setIsMobileMenuOpen(false);
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  }, [pathname]);
+
+  const navLinks = [
+    { label: 'Hakkımızda', href: '/about' },
+    { label: 'Disiplinler', href: '/disciplines' },
+    { label: 'Projeler', href: '/projects' },
+    { label: 'Etkinlikler', href: '/events' },
+    { label: 'Yayınlar', href: '/publications' },
+    { label: 'Ekip', href: '/team' },
+    { label: 'İletişim', href: '/contact' },
+  ];
 
   return (
     <>
@@ -43,7 +47,7 @@ const Navigation = () => {
         <div className="container-custom">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a href="#hero" onClick={(e) => { e.preventDefault(); scrollToSection('#hero'); }} className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <div className="relative w-14 h-14 flex items-center justify-center bg-white rounded-full p-1">
                 <Image
                   src="/images/general/atlaslogo.png"
@@ -57,25 +61,26 @@ const Navigation = () => {
                 <span className="text-lg font-bold text-white block leading-tight">A.I.S.</span>
                 <span className="text-xs text-[#94a3b8]">Atlas Interdisciplinary Society</span>
               </div>
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8">
               {navLinks.map((link, index) => (
-                <a key={index} href={link.href} onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
-                  className="relative text-sm font-medium text-white/70 hover:text-white transition-colors duration-300 group">
+                <Link key={index} href={link.href}
+                  className={`relative text-sm font-medium transition-colors duration-300 group ${pathname === link.href ? 'text-white' : 'text-white/70 hover:text-white'
+                    }`}>
                   {link.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#d4af37] transition-all duration-300 group-hover:w-full" />
-                </a>
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-[#d4af37] transition-all duration-300 ${pathname === link.href ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`} />
+                </Link>
               ))}
             </div>
 
             {/* CTA Button */}
             <div className="hidden lg:block">
-              <a href="#iletisim" onClick={(e) => { e.preventDefault(); scrollToSection('#iletisim'); }}
-                className="btn-primary text-sm py-3 px-6">
+              <Link href="/join" className="btn-primary text-sm py-3 px-6">
                 Üye Ol
-              </a>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -95,17 +100,17 @@ const Navigation = () => {
           <div className="p-6 pt-24">
             <div className="space-y-1">
               {navLinks.map((link, index) => (
-                <a key={index} href={link.href} onClick={(e) => { e.preventDefault(); scrollToSection(link.href); }}
-                  className="block text-lg font-medium text-white/80 hover:text-white hover:bg-[#1a2744] transition-all duration-300 py-3 px-4 rounded-lg">
+                <Link key={index} href={link.href}
+                  className={`block text-lg font-medium transition-all duration-300 py-3 px-4 rounded-lg ${pathname === link.href ? 'text-white bg-[#1a2744]' : 'text-white/80 hover:text-white hover:bg-[#1a2744]'
+                    }`}>
                   {link.label}
-                </a>
+                </Link>
               ))}
             </div>
             <div className="mt-8 pt-8 border-t border-[#1a2744]">
-              <a href="#iletisim" onClick={(e) => { e.preventDefault(); scrollToSection('#iletisim'); }}
-                className="btn-primary w-full text-center justify-center">
+              <Link href="/join" className="btn-primary w-full text-center flex justify-center">
                 Üye Ol
-              </a>
+              </Link>
             </div>
           </div>
         </div>

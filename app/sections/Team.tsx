@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Linkedin, Instagram } from 'lucide-react';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -223,18 +224,24 @@ const Team = () => {
             <div key={index} className="team-card group">
               {/* Image */}
               <div className="relative mb-4 overflow-hidden rounded-xl aspect-[3/4]">
-                <img src={member.image} alt={member.name} 
-                  className="w-full h-full object-cover transition-all duration-500 grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105" 
+                <Image src={member.image} alt={member.name}
+                  fill
+                  className="object-cover transition-all duration-500 grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105"
                   onError={(e) => {
-                    // Fallback for image load error
-                    (e.target as HTMLImageElement).src = '/images/general/hero-image.jpg'; 
+                    // Fallback handled via error boundary or state if needed, but next/image handles loading differently. 
+                    // Simpler to just let it fail or use a placeholder blur.
+                    const target = e.target as HTMLImageElement;
+                    if (target.src !== '/images/general/hero-image.jpg') {
+                      target.src = '/images/general/hero-image.jpg';
+                      target.srcset = '/images/general/hero-image.jpg';
+                    }
                   }}
-                  />
+                />
                 <div className="absolute inset-0 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{ background: 'linear-gradient(to top, rgba(10, 22, 40, 0.9) 0%, transparent 60%)' }}>
                   <div className="flex gap-3">
                     {member.linkedin && (
-                      <a href={member.linkedin} target="_blank" rel="noopener noreferrer" 
+                      <a href={member.linkedin} target="_blank" rel="noopener noreferrer"
                         className="w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 hover:bg-[#d4af37]"
                         style={{ background: '#1a2744' }}>
                         <Linkedin className="w-4 h-4 text-white" />

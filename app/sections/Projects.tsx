@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -124,7 +125,7 @@ const Projects = () => {
       style={{ background: '#0a1628' }}
     >
       {/* Background accent */}
-      <div 
+      <div
         className="absolute bottom-0 left-0 w-full h-1/2 opacity-20"
         style={{ background: 'radial-gradient(ellipse at bottom left, #dc2626 0%, transparent 50%)' }}
       />
@@ -145,50 +146,51 @@ const Projects = () => {
           {/* Featured Project */}
           <div className="project-featured group relative rounded-2xl overflow-hidden cursor-pointer">
             <div className="aspect-[21/9] relative">
-              <img
+              <Image
                 src={projects[0].image}
                 alt={projects[0].title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               {/* Overlay */}
-              <div 
+              <div
                 className="absolute inset-0 transition-opacity duration-500"
-                style={{ 
+                style={{
                   background: 'linear-gradient(to top, rgba(10, 22, 40, 0.95) 0%, rgba(10, 22, 40, 0.4) 50%, transparent 100%)',
                   opacity: 0.9,
                 }}
               />
-              
+
               {/* Content */}
               <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-end">
                 <div className="flex items-center gap-3 mb-4">
-                  <span 
+                  <span
                     className="px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider"
                     style={{ background: '#dc2626', color: 'white' }}
                   >
                     {projects[0].category}
                   </span>
-                  <span 
+                  <span
                     className="px-3 py-1 rounded-full text-xs font-medium"
                     style={{ background: '#1a2744', color: '#94a3b8' }}
                   >
                     {projects[0].status}
                   </span>
                 </div>
-                
+
                 <h3 className="text-3xl md:text-4xl font-bold text-white mb-3 group-hover:text-[#dc2626] transition-colors">
                   {projects[0].title}
                 </h3>
-                
+
                 <p className="text-lg max-w-2xl mb-4" style={{ color: '#94a3b8' }}>
                   {projects[0].description}
                 </p>
-                
+
                 <div className="flex items-center justify-between">
                   <code className="text-sm" style={{ color: '#64748b' }}>
                     {projects[0].metrics}
                   </code>
-                  <div 
+                  <div
                     className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-[#dc2626]"
                     style={{ background: '#1a2744' }}
                   >
@@ -208,44 +210,45 @@ const Projects = () => {
                 style={{ borderColor: '#1a2744', background: '#111d32' }}
               >
                 <div className="aspect-video relative overflow-hidden">
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div 
+                  <div
                     className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-80"
-                    style={{ 
+                    style={{
                       background: 'linear-gradient(to top, rgba(10, 22, 40, 0.95) 0%, rgba(10, 22, 40, 0.3) 60%, transparent 100%)',
                       opacity: 0.7,
                     }}
                   />
                 </div>
-                
+
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <span 
+                    <span
                       className="px-2 py-1 rounded text-xs font-medium uppercase tracking-wider"
                       style={{ background: '#1a2744', color: '#94a3b8' }}
                     >
                       {project.category}
                     </span>
-                    <span 
+                    <span
                       className="text-xs"
                       style={{ color: '#64748b' }}
                     >
                       {project.status}
                     </span>
                   </div>
-                  
+
                   <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#dc2626] transition-colors">
                     {project.title}
                   </h3>
-                  
+
                   <p className="text-sm mb-4" style={{ color: '#94a3b8' }}>
                     {project.description}
                   </p>
-                  
+
                   <code className="text-xs" style={{ color: '#64748b' }}>
                     {project.metrics}
                   </code>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react';
+import { ArrowRight, Mail, MapPin, Instagram } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -76,16 +76,17 @@ const Contact = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
             <div className="contact-info flex items-center gap-3 text-[#64748b]">
               <Mail className="w-5 h-5" />
-              <span className="text-sm">info@aisatlas.edu.tr</span>
+              <span className="text-sm">kulup.ais@atlas.edu.tr</span>
             </div>
             <div className="contact-info flex items-center gap-3 text-[#64748b]">
               <MapPin className="w-5 h-5" />
               <span className="text-sm">İstanbul Atlas Üniversitesi</span>
             </div>
-            <div className="contact-info flex items-center gap-3 text-[#64748b]">
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">+90 212 000 00 00</span>
-            </div>
+
+            <a href="https://www.instagram.com/atlas.interdisciplinary.soc/" target="_blank" rel="noopener noreferrer" className="contact-info flex items-center gap-3 text-[#64748b] hover:text-[#d4af37] transition-colors">
+              <Instagram className="w-5 h-5" />
+              <span className="text-sm">@atlas.interdisciplinary.soc</span>
+            </a>
           </div>
         </div>
       </div>
