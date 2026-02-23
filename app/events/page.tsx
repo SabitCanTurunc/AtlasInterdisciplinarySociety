@@ -21,7 +21,7 @@ export default async function EventsPage() {
     }
 
     // Fetch all events sorted by date ascending
-    const allEvents = await Event.find({}).sort({ date: 1 });
+    const allEvents = await Event.find({}).sort({ date: 1 }).lean();
 
     const now = new Date();
 
