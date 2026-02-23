@@ -21,17 +21,21 @@ export const metadata: Metadata = {
   description: "A community of interdisciplinary thinkers and creators at Atlas University.",
 };
 
-export default function RootLayout({
+import { auth } from "@/auth";
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-[#0a1628]`}
       >
-        <Navigation />
+        <Navigation session={session} />
         <main className="min-h-screen">
           {children}
         </main>

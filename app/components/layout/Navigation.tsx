@@ -6,7 +6,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 
-const Navigation = () => {
+import { useRef } from 'react';
+import { Session } from 'next-auth';
+import { login, logout } from '@/app/actions/auth';
+
+const Navigation = ({ session }: { session: Session | null }) => {
+  const adminLink = session?.user &&
+    ((session.user as any).role === 'admin' || (session.user as any).role === 'super_admin');
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -36,13 +43,15 @@ const Navigation = () => {
     { label: 'İletişim', href: '/contact' },
   ];
 
+  const isSolid = isScrolled || pathname !== '/';
+
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4' : 'py-6'}`}
         style={{
-          background: isScrolled ? 'rgba(10, 22, 40, 0.95)' : 'transparent',
-          backdropFilter: isScrolled ? 'blur(12px)' : 'none',
-          borderBottom: isScrolled ? '1px solid rgba(26, 39, 68, 0.5)' : 'none',
+          background: isSolid ? 'rgba(10, 22, 40, 0.95)' : 'transparent',
+          backdropFilter: isSolid ? 'blur(12px)' : 'none',
+          borderBottom: isSolid ? '1px solid rgba(26, 39, 68, 0.5)' : 'none',
         }}>
         <div className="container-custom">
           <div className="flex items-center justify-between">
@@ -76,11 +85,41 @@ const Navigation = () => {
               ))}
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden lg:block">
-              <Link href="/join" className="btn-primary text-sm py-3 px-6">
-                Üye Ol
-              </Link>
+            {/* CTA Button / User Menu */}
+            <div className="hidden lg:flex items-center gap-4">
+              {session?.user ? (
+                <div className="flex items-center gap-4">
+                  {adminLink && (
+                    <Link href="/admin" className="text-sm font-medium text-[#d4af37] hover:text-[#fcd34d] transition-colors">
+                      Admin
+                    </Link>
+                  )}
+                  <Link href="/profile" className="flex items-center gap-2 group">
+                    {session.user.image ? (
+                      <Image
+                        src={session.user.image}
+                        alt={session.user.name || 'User'}
+                        width={32}
+                        height={32}
+                        className="rounded-full border border-[#1e3a5f] group-hover:border-[#d4af37] transition-colors"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-[#1e3a5f] group-hover:bg-[#1a2744] transition-colors flex items-center justify-center text-white text-xs">
+                        {session.user.name?.charAt(0) || 'U'}
+                      </div>
+                    )}
+                  </Link>
+                  <form action={logout}>
+                    <button type="submit" className="text-sm text-white/70 hover:text-white transition-colors">
+                      Çıkış Yap
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <Link href="/login" className="btn-primary text-sm py-3 px-6">
+                  Üye Ol / Giriş
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -108,9 +147,39 @@ const Navigation = () => {
               ))}
             </div>
             <div className="mt-8 pt-8 border-t border-[#1a2744]">
-              <Link href="/join" className="btn-primary w-full text-center flex justify-center">
-                Üye Ol
-              </Link>
+              {session?.user ? (
+                <div className="space-y-4">
+                  <Link href="/profile" className="flex items-center gap-3 px-4 hover:bg-[#1a2744] py-2 rounded-lg transition-colors">
+                    {session.user.image && (
+                      <Image
+                        src={session.user.image}
+                        alt={session.user.name || 'User'}
+                        width={40}
+                        height={40}
+                        className="rounded-full"
+                      />
+                    )}
+                    <div>
+                      <div className="text-white font-medium">{session.user.name}</div>
+                      <div className="text-xs text-[#94a3b8]">{session.user.email}</div>
+                    </div>
+                  </Link>
+                  {adminLink && (
+                    <Link href="/admin" className="block text-center py-2 text-[#d4af37] border border-[#d4af37]/30 rounded-lg">
+                      Admin Paneli
+                    </Link>
+                  )}
+                  <form action={logout}>
+                    <button type="submit" className="w-full py-2 text-white/70 hover:text-white border border-[#1a2744] rounded-lg">
+                      Çıkış Yap
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <Link href="/login" className="btn-primary w-full text-center flex justify-center">
+                  Üye Ol / Giriş
+                </Link>
+              )}
             </div>
           </div>
         </div>
