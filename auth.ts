@@ -77,6 +77,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         createUser: async ({ user }) => {
             // Check if this is the first user
             await connectToDatabase();
+
+            // MongoDBAdapter bypasses Mongoose schemas, so we need to manually set timestamps
+            await User.findByIdAndUpdate(user.id, {
+                $setOnInsert: { createdAt: new Date(), updatedAt: new Date() }
+            }, { upsert: true });
+
             const count = await User.countDocuments();
             if (count === 1) {
                 // This is the first user (was just created, so count is 1)

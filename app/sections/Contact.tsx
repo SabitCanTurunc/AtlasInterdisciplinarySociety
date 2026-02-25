@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Mail, MapPin, Instagram } from 'lucide-react';
+import Link from 'next/link';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,13 +64,13 @@ const Contact = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <a href="#" className="contact-cta btn-primary text-lg px-10 py-5 group">
+            <Link href="/register" className="contact-cta btn-primary text-lg px-10 py-5 group">
               Üye Ol
               <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </a>
-            <a href="#" className="contact-cta btn-secondary text-lg px-10 py-5">
+            </Link>
+            <Link href="/contact" className="contact-cta btn-secondary text-lg px-10 py-5">
               İletişime Geç
-            </a>
+            </Link>
           </div>
 
           {/* Contact Info */}
@@ -78,10 +79,10 @@ const Contact = () => {
               <Mail className="w-5 h-5" />
               <span className="text-sm">kulup.ais@atlas.edu.tr</span>
             </div>
-            <div className="contact-info flex items-center gap-3 text-[#64748b]">
+            <a href="https://maps.app.goo.gl/ENBLgWd3oBeugB8f6?g_st=aw" target="_blank" rel="noopener noreferrer" className="contact-info flex items-center gap-3 text-[#64748b] hover:text-[#d4af37] transition-colors">
               <MapPin className="w-5 h-5" />
               <span className="text-sm">İstanbul Atlas Üniversitesi</span>
-            </div>
+            </a>
 
             <a href="https://www.instagram.com/atlas.interdisciplinary.soc/" target="_blank" rel="noopener noreferrer" className="contact-info flex items-center gap-3 text-[#64748b] hover:text-[#d4af37] transition-colors">
               <Instagram className="w-5 h-5" />

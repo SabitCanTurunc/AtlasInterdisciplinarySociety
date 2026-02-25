@@ -59,7 +59,7 @@ const Hero = () => {
   const stats = [
     { value: '500+', label: 'Aktif Üye' },
     { value: '10+', label: 'Fakülte' },
-    { value: '50+', label: 'Proje' },
+    { value: '10+', label: 'Proje' },
   ];
 
   return (
@@ -70,11 +70,11 @@ const Hero = () => {
       style={{ background: 'linear-gradient(135deg, #0a1628 0%, #111d32 50%, #1e3a5f 100%)' }}
     >
       {/* Gradient Orbs */}
-      <div className="gradient-orb absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-[100px]" 
+      <div className="gradient-orb absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-[100px]"
         style={{ background: 'radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, transparent 70%)' }} />
-      <div className="gradient-orb absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-15 blur-[100px]" 
+      <div className="gradient-orb absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-15 blur-[100px]"
         style={{ background: 'radial-gradient(circle, rgba(30, 58, 95, 0.5) 0%, transparent 70%)' }} />
-      <div className="gradient-orb absolute top-1/2 right-1/3 w-64 h-64 rounded-full opacity-10 blur-[80px]" 
+      <div className="gradient-orb absolute top-1/2 right-1/3 w-64 h-64 rounded-full opacity-10 blur-[80px]"
         style={{ background: 'radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%)' }} />
 
       {/* Grid Pattern */}
