@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Loader2, Camera } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ProfileClientProps {
     initialImage?: string;
@@ -24,7 +25,6 @@ export default function ProfileClient({ initialImage, name, email, role, created
 
         const file = e.target.files[0];
         setUploading(true);
-        setError('');
 
         try {
             // 1. Upload to Cloudinary via our existing /api/upload route
@@ -56,6 +56,7 @@ export default function ProfileClient({ initialImage, name, email, role, created
 
             // Success
             setImage(uploadData.url);
+            toast.success('Profil fotoğrafı başarıyla güncellendi.');
 
             // Note: In Next.js App Router, router.refresh() will re-fetch Server Components 
             // and merge the updated state, which is enough to force the Navbar or Session to see the newly updated DB image if configured correctly.
@@ -63,7 +64,7 @@ export default function ProfileClient({ initialImage, name, email, role, created
 
         } catch (err: any) {
             console.error('Upload Error:', err);
-            setError(err.message || 'Bir hata oluştu.');
+            toast.error(err.message || 'Bir hata oluştu.');
         } finally {
             setUploading(false);
         }
@@ -109,8 +110,6 @@ export default function ProfileClient({ initialImage, name, email, role, created
                         </label>
                     </div>
                 </div>
-
-                {error && <p className="text-red-400 text-sm mt-3">{error}</p>}
 
                 <h2 className="text-2xl font-bold mt-4">{name}</h2>
                 <p className="text-[#94a3b8] text-sm mb-6">{email}</p>

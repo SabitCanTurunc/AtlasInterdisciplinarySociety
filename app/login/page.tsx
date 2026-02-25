@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Lock, Loader2 } from 'lucide-react';
 import { login } from '@/app/actions/auth'; // We might need to adjust this if using client-side signIn for creds
+import { toast } from 'sonner';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -18,7 +19,6 @@ export default function LoginPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
 
         try {
             const result = await signIn('credentials', {
@@ -28,13 +28,14 @@ export default function LoginPage() {
             });
 
             if (result?.error) {
-                setError(result.error);
+                toast.error(result.error);
             } else {
+                toast.success('Giriş başarılı! Yönlendiriliyorsunuz...');
                 router.push('/profile');
                 router.refresh();
             }
         } catch (err) {
-            setError('Bir hata oluştu.');
+            toast.error('Giriş yaparken bir hata oluştu.');
         } finally {
             setLoading(false);
         }
@@ -51,12 +52,6 @@ export default function LoginPage() {
                     <h1 className="text-3xl font-bold text-white mb-2">Giriş Yap</h1>
                     <p className="text-[#94a3b8]">Hesabınıza erişmek için bilgilerinizi girin.</p>
                 </div>
-
-                {error && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-3 rounded-lg mb-6 text-sm">
-                        {error}
-                    </div>
-                )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>

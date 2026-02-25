@@ -21,7 +21,13 @@ export async function POST(request: Request) {
         const file = formData.get('file') as File;
 
         if (!file) {
-            return NextResponse.json({ message: 'Dosya bulunamadı.' }, { status: 400 });
+            return NextResponse.json({ error: 'Dosya bulunamadı.' }, { status: 400 });
+        }
+
+        // 5MB limit check (5 * 1024 * 1024 bytes)
+        const MAX_FILE_SIZE = 5 * 1024 * 1024;
+        if (file.size > MAX_FILE_SIZE) {
+            return NextResponse.json({ error: 'Dosya boyutu 5MB\'ı geçemez. Lütfen daha küçük bir görsel seçin.' }, { status: 400 });
         }
 
         const arrayBuffer = await file.arrayBuffer();

@@ -3,12 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, UploadCloud } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function EventForm() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
 
     const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -36,8 +35,6 @@ export default function EventForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
-        setSuccess('');
 
         try {
             let uploadedImageUrl = formData.imageUrl;
@@ -55,10 +52,11 @@ export default function EventForm() {
                 const uploadResult = await uploadRes.json();
 
                 if (!uploadRes.ok) {
-                    throw new Error(uploadResult.message || 'Resim yüklenemedi.');
+                    throw new Error(uploadResult.error || uploadResult.message || 'Resim yüklenemedi.');
                 }
 
                 uploadedImageUrl = uploadResult.url;
+                toast.success('Görsel başarıyla yüklendi.');
             }
 
             const res = await fetch('/api/admin/events', {
@@ -70,15 +68,15 @@ export default function EventForm() {
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.message || 'Bir hata oluştu.');
+                toast.error(data.message || 'Bir hata oluştu.');
             } else {
-                setSuccess('Etkinlik başarıyla eklendi.');
+                toast.success('Etkinlik başarıyla eklendi!');
                 setFormData({ title: '', description: '', date: '', location: '', locationLink: '', imageUrl: '', requiresRegistration: false });
                 setImageFile(null);
                 router.refresh(); // Refresh to show new event in the list
             }
         } catch (err: any) {
-            setError(err.message || 'Bir hata oluştu.');
+            toast.error(err.message || 'Bir hata oluştu.');
         } finally {
             setLoading(false);
         }
@@ -87,9 +85,6 @@ export default function EventForm() {
     return (
         <div className="bg-[#111d32] rounded-xl p-6 border border-[#1e3a5f] mb-8">
             <h2 className="text-xl font-semibold mb-4 text-white">Yeni Etkinlik Ekle</h2>
-
-            {error && <div className="bg-red-500/10 text-red-500 p-3 rounded-lg mb-4 text-sm">{error}</div>}
-            {success && <div className="bg-green-500/10 text-green-500 p-3 rounded-lg mb-4 text-sm">{success}</div>}
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

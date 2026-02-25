@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/layout/Navigation";
 import Footer from "./components/layout/Footer";
+import { Toaster } from 'sonner';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,6 +41,7 @@ export default async function RootLayout({
           {children}
         </main>
         <Footer />
+        <Toaster position="top-right" richColors theme="dark" />
       </body>
     </html>
   );

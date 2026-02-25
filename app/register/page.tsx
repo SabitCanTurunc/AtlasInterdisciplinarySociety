@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Mail, Lock, User, Loader2 } from 'lucide-react';
 import { login } from '@/app/actions/auth';
+import { toast } from 'sonner';
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -17,7 +18,6 @@ export default function RegisterPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
 
         try {
             const res = await fetch('/api/auth/register', {
@@ -35,15 +35,15 @@ export default function RegisterPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                setError(data.message || 'Bir hata oluştu.');
+                toast.error(data.message || 'Bir hata oluştu.');
                 setLoading(false);
                 return;
             }
 
-            // Auto login or redirect to login? Let's redirect to login for simplicity or auto login
+            toast.success('Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...');
             router.push('/login');
         } catch (err) {
-            setError('Bir hata oluştu.');
+            toast.error('Bir hata oluştu.');
             setLoading(false);
         }
     };
@@ -59,12 +59,6 @@ export default function RegisterPage() {
                     <h1 className="text-3xl font-bold text-white mb-2">Kayıt Ol</h1>
                     <p className="text-[#94a3b8]">A.I.S. ailesine katılmak için hesap oluşturun.</p>
                 </div>
-
-                {error && (
-                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-3 rounded-lg mb-6 text-sm">
-                        {error}
-                    </div>
-                )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>

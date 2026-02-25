@@ -5,8 +5,11 @@ import User from '@/lib/models/User';
 import Image from 'next/image';
 import Link from 'next/link';
 import Event from '@/lib/models/Event';
+import Project from '@/lib/models/Project';
 import EventForm from './components/EventForm';
+import ProjectForm from './components/ProjectForm';
 import DeleteEventButton from './components/DeleteEventButton';
+import DeleteProjectButton from './components/DeleteProjectButton';
 import ParticipantsModal from './components/ParticipantsModal';
 
 type Props = {
@@ -26,8 +29,10 @@ export default async function AdminDashboard(props: Props) {
     await connectToDatabase();
     const dbUsers = await User.find({}).sort({ createdAt: -1 }).lean();
     const dbEvents = await Event.find({}).populate('participants', 'name email').sort({ date: 1 }).lean();
+    const dbProjects = await Project.find({}).sort({ createdAt: -1 }).lean();
 
     const users = dbUsers.map(u => ({ ...u, _id: u._id.toString() }));
+    const projects = dbProjects.map(p => ({ ...p, _id: p._id.toString() }));
     const events = dbEvents.map(e => ({
         ...e,
         _id: e._id.toString(),
@@ -50,14 +55,64 @@ export default async function AdminDashboard(props: Props) {
                             <Link href="/admin?tab=users" className={`p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'users' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>👥</span> Kullanıcı Yönetimi
                             </Link>
-                            <Link href="/admin?tab=events" className={`p-4 transition-all flex items-center gap-3 ${tab === 'events' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                            <Link href="/admin?tab=events" className={`p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'events' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>📅</span> Etkinlik Yönetimi
+                            </Link>
+                            <Link href="/admin?tab=projects" className={`p-4 transition-all flex items-center gap-3 ${tab === 'projects' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                                <span>🚀</span> Projeler
                             </Link>
                         </div>
                     </div>
 
                     {/* Content Area */}
                     <div className="flex-1">
+                        {tab === 'projects' && (
+                            <div>
+                                <ProjectForm />
+
+                                <div className="bg-[#111d32] rounded-xl p-6 border border-[#1e3a5f] mt-8 mb-8">
+                                    <h2 className="text-xl font-semibold mb-4 text-white">Ekli Projeler</h2>
+                                    {projects.length === 0 ? (
+                                        <p className="text-[#94a3b8]">Henüz hiç proje eklenmemiş.</p>
+                                    ) : (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            {projects.map((project) => (
+                                                <div key={project._id.toString()} className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-4 relative group flex flex-col">
+                                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                                        <DeleteProjectButton projectId={project._id.toString()} projectTitle={project.title} />
+                                                    </div>
+
+                                                    {project.imageUrl && (
+                                                        <div className="relative w-full h-32 rounded-lg overflow-hidden mb-4 border border-[#1e3a5f]">
+                                                            <Image src={project.imageUrl} alt={project.title} fill className="object-cover" />
+                                                            {project.featured && (
+                                                                <div className="absolute top-2 left-2 bg-[#d4af37] text-[#0a1628] text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                                                                    Vitrin
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+
+                                                    <h3 className="font-semibold text-white mb-1 pr-8 text-lg">{project.title}</h3>
+                                                    <div className="flex items-center gap-2 mb-3">
+                                                        <span className="text-[10px] uppercase tracking-wider bg-[#1a2744] text-[#cbd5e1] px-2 py-0.5 rounded">
+                                                            {project.category}
+                                                        </span>
+                                                        <span className="text-[10px] uppercase tracking-wider bg-[#1e3a5f]/50 text-[#94a3b8] px-2 py-0.5 rounded">
+                                                            {project.status}
+                                                        </span>
+                                                    </div>
+
+                                                    <p className="text-sm text-[#cbd5e1] mb-4 line-clamp-3 flex-1">{project.description}</p>
+                                                    <p className="text-xs text-[#d4af37] font-mono mt-auto pt-3 border-t border-[#1e3a5f]">{project.metrics}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
                         {tab === 'events' && (
                             <div>
                                 <EventForm />
