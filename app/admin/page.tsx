@@ -7,12 +7,16 @@ import Link from 'next/link';
 import Event from '@/lib/models/Event';
 import Project from '@/lib/models/Project';
 import Gallery from '@/lib/models/Gallery';
+import Publication from '@/lib/models/Publication';
 import EventForm from './components/EventForm';
 import ProjectForm from './components/ProjectForm';
 import GalleryForm from './components/GalleryForm';
+import PublicationForm from './components/PublicationForm';
 import DeleteEventButton from './components/DeleteEventButton';
 import DeleteProjectButton from './components/DeleteProjectButton';
 import DeleteGalleryImageButton from './components/DeleteGalleryImageButton';
+import DeletePublicationButton from './components/DeletePublicationButton';
+import TogglePublicationButton from './components/TogglePublicationButton';
 import ParticipantsModal from './components/ParticipantsModal';
 
 type Props = {
@@ -34,10 +38,12 @@ export default async function AdminDashboard(props: Props) {
     const dbEvents = await Event.find({}).populate('participants', 'name email').sort({ date: 1 }).lean();
     const dbProjects = await Project.find({}).sort({ createdAt: -1 }).lean();
     const dbGallery = await Gallery.find({}).sort({ createdAt: -1 }).lean();
+    const dbPublications = await Publication.find({}).sort({ createdAt: -1 }).lean();
 
     const users = dbUsers.map(u => ({ ...u, _id: u._id.toString() }));
     const projects = dbProjects.map(p => ({ ...p, _id: p._id.toString() }));
     const galleryItems = dbGallery.map(g => ({ ...g, _id: g._id.toString() }));
+    const publications = dbPublications.map(p => ({ ...p, _id: p._id.toString() }));
     const events = dbEvents.map(e => ({
         ...e,
         _id: e._id.toString(),
@@ -65,6 +71,9 @@ export default async function AdminDashboard(props: Props) {
                             </Link>
                             <Link href="/admin?tab=projects" className={`p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'projects' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>🚀</span> Projeler
+                            </Link>
+                            <Link href="/admin?tab=publications" className={`p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'publications' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                                <span>📚</span> Yayın Yönetimi
                             </Link>
                             <Link href="/admin?tab=gallery" className={`p-4 transition-all flex items-center gap-3 ${tab === 'gallery' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>🖼️</span> Galeri Yönetimi
@@ -101,6 +110,50 @@ export default async function AdminDashboard(props: Props) {
                                                     </div>
 
                                                     <p className="text-sm text-[#cbd5e1] mt-3 line-clamp-1 w-full text-center px-2">{item.title}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {tab === 'publications' && (
+                            <div>
+                                <PublicationForm />
+
+                                <div className="bg-[#111d32] rounded-xl p-6 border border-[#1e3a5f] mt-8 mb-8 shadow-lg">
+                                    <h2 className="text-xl font-semibold mb-6 text-white">Yayınlar Listesi</h2>
+                                    {publications.length === 0 ? (
+                                        <p className="text-[#94a3b8] bg-[#0a1628] p-4 rounded-lg border border-[#1e3a5f]">Henüz hiç yayın eklenmemiş.</p>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {publications.map((pub) => (
+                                                <div key={pub._id.toString()} className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-5 relative group flex flex-col md:flex-row gap-4 items-start md:items-center hover:border-[#3b82f6]/50 transition-colors">
+
+                                                    {/* Left: Info */}
+                                                    <div className="flex-grow">
+                                                        <div className="flex items-center gap-3 mb-2">
+                                                            <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#1a2744] text-[#cbd5e1] border border-[#1e3a5f]">
+                                                                {pub.type}
+                                                            </span>
+                                                            <span className="text-xs text-[#64748b] font-medium">{pub.date}</span>
+                                                        </div>
+                                                        <h3 className="font-bold text-lg text-white mb-1 group-hover:text-[#d4af37] transition-colors line-clamp-1">{pub.title}</h3>
+                                                        <p className="text-sm text-[#94a3b8] line-clamp-2">{pub.desc}</p>
+                                                        {pub.link && pub.link !== '#' && (
+                                                            <a href={pub.link} target="_blank" rel="noopener noreferrer" className="text-xs text-[#3b82f6] hover:underline inline-flex items-center gap-1 mt-2">
+                                                                🔗 Linke Git
+                                                            </a>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Right: Actions */}
+                                                    <div className="flex flex-row md:flex-col gap-2 shrink-0 w-full md:w-auto mt-2 md:mt-0 justify-end pt-3 md:pt-0 border-t md:border-t-0 border-[#1e3a5f]">
+                                                        <TogglePublicationButton publicationId={pub._id.toString()} initialStatus={pub.isActive} />
+                                                        <DeletePublicationButton publicationId={pub._id.toString()} title={pub.title} />
+                                                    </div>
+
                                                 </div>
                                             ))}
                                         </div>
