@@ -6,10 +6,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Event from '@/lib/models/Event';
 import Project from '@/lib/models/Project';
+import Gallery from '@/lib/models/Gallery';
 import EventForm from './components/EventForm';
 import ProjectForm from './components/ProjectForm';
+import GalleryForm from './components/GalleryForm';
 import DeleteEventButton from './components/DeleteEventButton';
 import DeleteProjectButton from './components/DeleteProjectButton';
+import DeleteGalleryImageButton from './components/DeleteGalleryImageButton';
 import ParticipantsModal from './components/ParticipantsModal';
 
 type Props = {
@@ -30,9 +33,11 @@ export default async function AdminDashboard(props: Props) {
     const dbUsers = await User.find({}).sort({ createdAt: -1 }).lean();
     const dbEvents = await Event.find({}).populate('participants', 'name email').sort({ date: 1 }).lean();
     const dbProjects = await Project.find({}).sort({ createdAt: -1 }).lean();
+    const dbGallery = await Gallery.find({}).sort({ createdAt: -1 }).lean();
 
     const users = dbUsers.map(u => ({ ...u, _id: u._id.toString() }));
     const projects = dbProjects.map(p => ({ ...p, _id: p._id.toString() }));
+    const galleryItems = dbGallery.map(g => ({ ...g, _id: g._id.toString() }));
     const events = dbEvents.map(e => ({
         ...e,
         _id: e._id.toString(),
@@ -58,14 +63,52 @@ export default async function AdminDashboard(props: Props) {
                             <Link href="/admin?tab=events" className={`p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'events' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>📅</span> Etkinlik Yönetimi
                             </Link>
-                            <Link href="/admin?tab=projects" className={`p-4 transition-all flex items-center gap-3 ${tab === 'projects' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                            <Link href="/admin?tab=projects" className={`p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'projects' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>🚀</span> Projeler
+                            </Link>
+                            <Link href="/admin?tab=gallery" className={`p-4 transition-all flex items-center gap-3 ${tab === 'gallery' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                                <span>🖼️</span> Galeri Yönetimi
                             </Link>
                         </div>
                     </div>
 
                     {/* Content Area */}
                     <div className="flex-1">
+                        {tab === 'gallery' && (
+                            <div>
+                                <GalleryForm />
+
+                                <div className="bg-[#111d32] rounded-xl p-6 border border-[#1e3a5f] mt-8 mb-8">
+                                    <h2 className="text-xl font-semibold mb-4 text-white">Galeri Görselleri</h2>
+                                    {galleryItems.length === 0 ? (
+                                        <p className="text-[#94a3b8]">Henüz hiç görsel eklenmemiş.</p>
+                                    ) : (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                            {galleryItems.map((item) => (
+                                                <div key={item._id.toString()} className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-2 relative group flex flex-col items-center">
+                                                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                                        <DeleteGalleryImageButton imageId={item._id.toString()} />
+                                                    </div>
+
+                                                    <div className="relative w-full aspect-video rounded-md overflow-hidden bg-black/50">
+                                                        <Image
+                                                            src={item.imageUrl}
+                                                            alt={item.title}
+                                                            fill
+                                                            className="object-contain"
+                                                            sizes="(max-width: 768px) 100vw, 33vw"
+                                                        />
+                                                    </div>
+
+                                                    <p className="text-sm text-[#cbd5e1] mt-3 line-clamp-1 w-full text-center px-2">{item.title}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
                         {tab === 'projects' && (
                             <div>
                                 <ProjectForm />

@@ -1,52 +1,68 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import { getGalleryImages } from '../actions/gallery';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const images = [
-  '/images/galery/gallery-1.jpeg',
-  '/images/galery/gallery-2.jpeg',
-  '/images/galery/gallery-3.jpeg',
+type GalleryImage = {
+    _id: string;
+    title: string;
+    imageUrl: string;
+};
+
+const defaultImages: GalleryImage[] = [
+    { _id: 'static-1', title: 'Atlas Society', imageUrl: '/images/galery/gallery-1.jpeg' },
+    { _id: 'static-2', title: 'Atlas Society', imageUrl: '/images/galery/gallery-2.jpeg' },
+    { _id: 'static-3', title: 'Atlas Society', imageUrl: '/images/galery/gallery-3.jpeg' },
 ];
 
 const Gallery = () => {
     const sectionRef = useRef<HTMLElement>(null);
+    const [images, setImages] = useState<GalleryImage[]>(defaultImages);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [emblaRef] = useEmblaCarousel(
+        { loop: true, align: 'start', dragFree: true },
+        [Autoplay({ delay: 3000, stopOnInteraction: false })]
+    );
+
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const data = await getGalleryImages();
+                if (data && data.length > 0) {
+                    setImages([...defaultImages, ...data]);
+                }
+            } catch (error) {
+                console.error("Failed to fetch gallery images", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchImages();
+    }, []);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Header Animation
             gsap.fromTo('.gallery-header',
                 { opacity: 0, y: 30 },
                 { opacity: 1, y: 0, duration: 0.6, scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' } }
             );
 
-            // Horizontal Scroll Animation
-            // Creating a seamless loop or just a horizontal move depending on content width
-            // Since we have few images, let's make them display nicely in a grid or a large slider
-            // For 3 images, a grid or a simple layout might be better than an infinite loop unless we duplicate them.
-
-            gsap.fromTo('.gallery-image-container',
+            gsap.fromTo('.gallery-carousel',
                 { opacity: 0, y: 50 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    stagger: 0.2,
-                    scrollTrigger: {
-                        trigger: '.gallery-grid',
-                        start: 'top 70%'
-                    }
-                }
+                { opacity: 1, y: 0, duration: 0.8, scrollTrigger: { trigger: '.gallery-carousel', start: 'top 70%' } }
             );
-
         }, sectionRef);
 
         return () => ctx.revert();
-    }, []);
+    }, [images.length]);
 
     return (
         <section ref={sectionRef} id="gallery" className="section-padding bg-[#0a1628] relative overflow-hidden text-white">
@@ -64,18 +80,30 @@ const Gallery = () => {
                     </p>
                 </div>
 
-                <div className="gallery-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {images.map((src, index) => (
-                        <div key={index} className="gallery-image-container relative aspect-[4/3] rounded-2xl overflow-hidden group border border-[#1e3a5f]">
-                            <Image
-                                src={src}
-                                alt={`Atlas Gallery ${index + 1}`}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500" />
-                        </div>
-                    ))}
+                <div className="gallery-carousel overflow-hidden cursor-grab active:cursor-grabbing border-y border-[#1e3a5f]/20 py-8" ref={emblaRef}>
+                    <div className="flex touch-pan-y ml-[-1rem]">
+                        {images.map((img) => (
+                            <div key={img._id} className="relative flex-[0_0_85%] sm:flex-[0_0_50%] lg:flex-[0_0_35%] pl-[1rem] min-w-0">
+                                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden group border border-[#1e3a5f] bg-[#111d32]">
+                                    <Image
+                                        src={img.imageUrl}
+                                        alt={img.title}
+                                        fill
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                        sizes="(max-width: 640px) 85vw, (max-width: 1024px) 50vw, 35vw"
+                                    />
+                                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <p className="text-sm text-center font-medium text-white">{img.title}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        {isLoading && (
+                            <div className="relative flex-[0_0_85%] sm:flex-[0_0_50%] lg:flex-[0_0_35%] pl-[1rem] min-w-0 flex items-center justify-center">
+                                <div className="w-8 h-8 border-4 border-[#1e3a5f] border-t-[#d4af37] rounded-full animate-spin"></div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>
