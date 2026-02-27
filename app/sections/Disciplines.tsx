@@ -115,19 +115,27 @@ const Disciplines = () => {
     <section
       ref={sectionRef}
       id="disiplinler"
-      className="section-padding relative overflow-hidden bg-[#0a1628] text-white py-32"
+      className="section-padding relative overflow-hidden bg-[#0a0802] text-white py-32"
       onMouseMove={handleMouseMove}
     >
-      {/* Background Ambience */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#d4af37]/10 via-[#0a1628] to-[#0a1628] pointer-events-none" />
+      {/* Background Ambience with Honeycomb Hex Pattern */}
+      <div
+        className="absolute inset-0 z-0 opacity-20 pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='103.923' viewBox='0 0 60 103.923' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 17.32v34.64l-30 17.32L0 51.96V17.32zM30 103.92l30-17.32V51.96l-30-17.32L0 51.96v34.64zM60 51.96l30 17.32v34.64l-30 17.32-30-17.32V69.28z' fill='none' stroke='%23d4af37' stroke-width='1' stroke-opacity='0.4'/%3E%3C/svg%3E")`,
+          backgroundSize: '60px 103.923px'
+        }}
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#d4af37]/15 via-[#1a1405]/80 to-[#0a0802] pointer-events-none z-0" />
 
       <div className="container-custom relative z-10">
         {/* Header */}
-        <div className="discipline-header text-center max-w-4xl mx-auto mb-24">
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tighter">
+        <div className="discipline-header text-center max-w-4xl mx-auto mb-24 relative">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#d4af37]/20 blur-[100px] rounded-full pointer-events-none" />
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tighter relative z-10">
             DİSİPLİNLER <span className="text-[#d4af37]">AĞI</span>
           </h2>
-          <p className="text-[#94a3b8] font-light text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-[#fbbf24] font-light text-lg max-w-2xl mx-auto leading-relaxed relative z-10">
             Yatayda genişleyen, birbirine kenetlenmiş kolektif zeka hücreleri.
           </p>
         </div>
@@ -161,22 +169,23 @@ const Disciplines = () => {
                   >
                     {/* Hexagon Clip Container */}
                     <div
-                      className="absolute inset-[2px] bg-[#111d32] transition-all duration-500"
+                      className="absolute inset-[2px] bg-[#291804] transition-all duration-500"
                       style={{
                         clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                       }}
                     >
                       {/* 1. Static Border */}
                       <div
-                        className="absolute inset-0 bg-[#1e3a5f]"
+                        className="absolute inset-0 bg-[#d4af37]"
                         style={{
+                          opacity: 0.2,
                           clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                         }}
                       />
 
-                      {/* 2. Inner Navy Background */}
+                      {/* 2. Inner Background */}
                       <div
-                        className="absolute inset-[1px] bg-[#0a1628] group-hover/hex:bg-[#111d32] transition-colors duration-300"
+                        className="absolute inset-[1px] bg-[#0f0a02] group-hover/hex:bg-[#291804] transition-colors duration-300"
                         style={{
                           clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
                         }}
