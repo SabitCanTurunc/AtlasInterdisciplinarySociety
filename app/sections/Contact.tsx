@@ -3,11 +3,13 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Mail, MapPin, Instagram } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -68,9 +70,16 @@ const Contact = () => {
               Üye Ol
               <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
-            <Link href="/contact" className="contact-cta btn-secondary text-lg px-10 py-5">
-              İletişime Geç
-            </Link>
+
+            {pathname === '/' ? (
+              <Link href="/contact" className="contact-cta btn-secondary text-lg px-10 py-5">
+                İletişime Geç
+              </Link>
+            ) : (
+              <a href="https://chat.whatsapp.com/C7SuSBDjYhyBvnvctSLB2i" target="_blank" rel="noopener noreferrer" className="contact-cta btn-secondary text-lg px-10 py-5 flex items-center">
+                WhatsApp Topluluğuna Katıl
+              </a>
+            )}
           </div>
 
           {/* Contact Info */}
