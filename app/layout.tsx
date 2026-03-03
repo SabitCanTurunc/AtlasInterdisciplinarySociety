@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 };
 
 import { auth } from "@/auth";
+import { LanguageProvider } from "./context/LanguageContext";
 
 export default async function RootLayout({
   children,
@@ -36,12 +37,14 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-[#0a1628]`}
       >
-        <Navigation session={session} />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <Toaster position="top-right" richColors theme="dark" />
+        <LanguageProvider>
+          <Navigation session={session} />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+          <Toaster position="top-right" richColors theme="dark" />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -9,6 +9,7 @@ import { Menu, X } from 'lucide-react';
 import { useRef } from 'react';
 import { Session } from 'next-auth';
 import { login, logout } from '@/app/actions/auth';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 const Navigation = ({ session }: { session: Session | null }) => {
   const adminLink = session?.user &&
@@ -17,6 +18,10 @@ const Navigation = ({ session }: { session: Session | null }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+
+  const { language, t: allTranslations, toggleLanguage } = useLanguage();
+  const t = allTranslations.header;
+  const common = allTranslations.common;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,13 +39,13 @@ const Navigation = ({ session }: { session: Session | null }) => {
   }, [pathname]);
 
   const navLinks = [
-    { label: 'Hakkımızda', href: '/about' },
-    { label: 'Disiplinler', href: '/disciplines' },
-    { label: 'Projeler', href: '/projects' },
-    { label: 'Etkinlikler', href: '/events' },
-    { label: 'Yayınlar', href: '/publications' },
-    { label: 'Ekip', href: '/team' },
-    { label: 'İletişim', href: '/contact' },
+    { label: t.about, href: '/about' },
+    { label: t.disciplines, href: '/disciplines' },
+    { label: t.projects, href: '/projects' },
+    { label: t.events, href: '/events' },
+    { label: t.publications, href: '/publications' },
+    { label: t.team, href: '/team' },
+    { label: t.contact, href: '/contact' },
   ];
 
   const isSolid = isScrolled || pathname !== '/';
@@ -60,15 +65,15 @@ const Navigation = ({ session }: { session: Session | null }) => {
               <div className="relative w-14 h-14 flex items-center justify-center bg-white rounded-full p-1">
                 <Image
                   src="/images/general/atlaslogo.png"
-                  alt="Atlas Logo"
+                  alt={common.logoAlt}
                   width={56}
                   height={56}
                   className="w-full h-full object-contain"
                 />
               </div>
               <div className="hidden sm:block">
-                <span className="text-lg font-bold text-white block leading-tight">A.I.S.</span>
-                <span className="text-xs text-[#94a3b8]">Atlas Interdisciplinary Society</span>
+                <span className="text-lg font-bold text-white block leading-tight">{common.logoAbbr}</span>
+                <span className="text-xs text-[#94a3b8]">{common.logoText}</span>
               </div>
             </Link>
 
@@ -87,37 +92,47 @@ const Navigation = ({ session }: { session: Session | null }) => {
 
             {/* CTA Button / User Menu */}
             <div className="hidden lg:flex items-center gap-4">
+              <button
+                onClick={toggleLanguage}
+                className="text-sm font-bold text-white/70 hover:text-white transition-colors flex items-center gap-1 mr-2"
+                aria-label={common.toggleLanguage}
+              >
+                <span className={language === 'tr' ? 'text-white' : ''}>TR</span>
+                <span className="text-white/40 font-normal">|</span>
+                <span className={language === 'en' ? 'text-white' : ''}>EN</span>
+              </button>
+
               {session?.user ? (
                 <div className="flex items-center gap-4">
                   {adminLink && (
                     <Link href="/admin" className="text-sm font-medium text-[#d4af37] hover:text-[#fcd34d] transition-colors">
-                      Admin
+                      {t.admin}
                     </Link>
                   )}
                   <Link href="/profile" className="flex items-center gap-2 group">
                     {session.user.image ? (
                       <Image
                         src={session.user.image}
-                        alt={session.user.name || 'User'}
+                        alt={session.user.name || common.userAlt}
                         width={32}
                         height={32}
                         className="rounded-full border border-[#1e3a5f] group-hover:border-[#d4af37] transition-colors"
                       />
                     ) : (
                       <div className="w-8 h-8 rounded-full bg-[#1e3a5f] group-hover:bg-[#1a2744] transition-colors flex items-center justify-center text-white text-xs">
-                        {session.user.name?.charAt(0) || 'U'}
+                        {session.user.name?.charAt(0) || common.userAlt.charAt(0)}
                       </div>
                     )}
                   </Link>
                   <form action={logout}>
                     <button type="submit" className="text-sm text-white/70 hover:text-white transition-colors">
-                      Çıkış Yap
+                      {t.logout}
                     </button>
                   </form>
                 </div>
               ) : (
                 <Link href="/login" className="btn-primary text-sm py-3 px-6">
-                  Üye Ol / Giriş
+                  {t.login}
                 </Link>
               )}
             </div>
@@ -147,13 +162,23 @@ const Navigation = ({ session }: { session: Session | null }) => {
               ))}
             </div>
             <div className="mt-8 pt-8 border-t border-[#1a2744]">
+              <button
+                onClick={toggleLanguage}
+                className="w-full flex justify-center items-center gap-2 py-3 mb-4 text-white/80 hover:text-white border border-[#1a2744] hover:bg-[#1a2744] rounded-lg transition-colors"
+                aria-label={common.toggleLanguage}
+              >
+                <span className={language === 'tr' ? 'font-bold text-white' : ''}>TR</span>
+                <span className="text-white/40">|</span>
+                <span className={language === 'en' ? 'font-bold text-white' : ''}>EN</span>
+              </button>
+
               {session?.user ? (
                 <div className="space-y-4">
                   <Link href="/profile" className="flex items-center gap-3 px-4 hover:bg-[#1a2744] py-2 rounded-lg transition-colors">
                     {session.user.image && (
                       <Image
                         src={session.user.image}
-                        alt={session.user.name || 'User'}
+                        alt={session.user.name || common.userAlt}
                         width={40}
                         height={40}
                         className="rounded-full"
@@ -166,18 +191,18 @@ const Navigation = ({ session }: { session: Session | null }) => {
                   </Link>
                   {adminLink && (
                     <Link href="/admin" className="block text-center py-2 text-[#d4af37] border border-[#d4af37]/30 rounded-lg">
-                      Admin Paneli
+                      {t.adminPanel}
                     </Link>
                   )}
                   <form action={logout}>
                     <button type="submit" className="w-full py-2 text-white/70 hover:text-white border border-[#1a2744] rounded-lg">
-                      Çıkış Yap
+                      {t.logout}
                     </button>
                   </form>
                 </div>
               ) : (
                 <Link href="/login" className="btn-primary w-full text-center flex justify-center">
-                  Üye Ol / Giriş
+                  {t.login}
                 </Link>
               )}
             </div>

@@ -7,6 +7,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Instagram, Linkedin, Mail, Globe } from 'lucide-react';
 
+import { useLanguage } from '@/app/context/LanguageContext';
+
 gsap.registerPlugin(ScrollTrigger);
 
 // Custom TikTok Icon Component
@@ -48,29 +50,33 @@ const Footer = () => {
     return () => ctx.revert();
   }, []);
 
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.footer;
+  const common = allTranslations.common;
+
   const linkColumns = [
     {
-      title: 'Kurumsal', links: [
-        { label: 'Hakkımızda', href: '/about' },
-        { label: 'Vizyon', href: '/about' },
-        { label: 'Ekip', href: '/team' },
-        { label: 'Kariyer', href: '/join' }
+      title: t.columns.corporate, links: [
+        { label: t.links.about, href: '/about' },
+        { label: t.links.vision, href: '/about' },
+        { label: t.links.team, href: '/team' },
+        { label: t.links.career, href: '/join' }
       ]
     },
     {
-      title: 'Programlar', links: [
-        { label: 'Fakülteler', href: '/disciplines' },
-        { label: 'Projeler', href: '/projects' },
-        { label: 'Etkinlikler', href: '/events' },
-        { label: 'Araştırma', href: '/publications' }
+      title: t.columns.programs, links: [
+        { label: t.links.faculties, href: '/disciplines' },
+        { label: t.links.projects, href: '/projects' },
+        { label: t.links.events, href: '/events' },
+        { label: t.links.research, href: '/publications' }
       ]
     },
     {
-      title: 'İletişim', links: [
-        { label: 'Bize Ulaşın', href: '/contact' },
-        { label: 'Üyelik', href: '/join' },
-        { label: 'SSS', href: '/contact' },
-        { label: 'Basın', href: '/contact' }
+      title: t.columns.contact, links: [
+        { label: t.links.contactUs, href: '/contact' },
+        { label: t.links.membership, href: '/join' },
+        { label: t.links.faq, href: '/contact' },
+        { label: t.links.press, href: '/contact' }
       ]
     },
   ];
@@ -98,16 +104,16 @@ const Footer = () => {
               <div className="relative w-14 h-14 flex items-center justify-center bg-white rounded-full p-1">
                 <Image
                   src="/images/general/atlaslogo.png"
-                  alt="Atlas Logo"
+                  alt={common.logoAlt}
                   width={56}
                   height={56}
                   className="w-full h-full object-contain"
                 />
               </div>
-              <span className="text-xl font-bold text-white">A.I.S.</span>
+              <span className="text-xl font-bold text-white">{common.logoAbbr}</span>
             </div>
             <p className="text-sm mb-6 max-w-xs text-[#64748b]">
-              Bireysel güç, kolektif akıl. Geleceği birlikte inşa ediyoruz.
+              {t.tagline}
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social, index) => (
@@ -139,11 +145,11 @@ const Footer = () => {
         <div className="border-t border-[#1a2744] pt-8">
           <div className="footer-bottom flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-[#64748b]">
-              © 2026 ATLAS INTERDISCIPLINARY SOCIETY. Tüm hakları saklıdır.
+              © {new Date().getFullYear()} {common.logoText.toUpperCase()}. {t.bottom.rights}
             </p>
             <div className="flex gap-6">
-              <Link href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">Gizlilik Politikası</Link>
-              <Link href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">Kullanım Koşulları</Link>
+              <Link href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">{t.bottom.privacy}</Link>
+              <Link href="#" className="text-sm transition-colors duration-300 hover:text-white text-[#64748b]">{t.bottom.terms}</Link>
             </div>
           </div>
         </div>
