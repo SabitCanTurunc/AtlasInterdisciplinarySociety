@@ -1,8 +1,11 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Linkedin, Instagram } from 'lucide-react';
 import Image from 'next/image';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,168 +21,168 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     name: 'Salih Bora İflazoğlu',
-    role: 'Kulüp Başkanı',
-    faculty: 'Moleküler Biyoloji ve Genetik',
+    role: 'president',
+    faculty: 'mbg',
     image: '/images/team-new/1salih-bora-iflazoglu-kulup-baskani-molekuler-biyoloji-ve-genetik.jpeg',
     instagram: 'https://www.instagram.com/bora__salih',
     linkedin: ''
   },
   {
     name: 'Meryem Gökgöz',
-    role: 'Başkan Yardımcısı',
-    faculty: 'Endüstri Mühendisliği',
+    role: 'vp',
+    faculty: 'ie',
     image: '/images/team-new/2meryem-gokgoz-baskan-yardimcisi-endustri-muhendisligi.jpeg',
     instagram: 'https://www.instagram.com/merymgkgz',
     linkedin: ''
   },
   {
     name: 'Arda Coşkun',
-    role: 'Başkan Yardımcısı',
-    faculty: 'Bilgisayar Mühendisliği',
+    role: 'vp',
+    faculty: 'ce',
     image: '/images/team-new/3arda-coskun-baskan-yardimcisi-bilgisayar-muhendisligi.jpeg',
     instagram: 'https://www.instagram.com/ardcoskunn0/',
     linkedin: ''
   },
   {
     name: 'Ezgi Öz',
-    role: 'Başkan Yardımcısı',
-    faculty: 'Endüstri Mühendisliği',
+    role: 'vp',
+    faculty: 'ie',
     image: '/images/team-new/4ezgi-oz-baskan-yardimcisi-endustri-muhendisligi.jpeg',
     instagram: 'https://www.instagram.com/ezzgiozz_',
     linkedin: 'https://www.linkedin.com/in/ezgioz7'
   },
   {
     name: 'Selen Arıcı',
-    role: 'Temsilci',
-    faculty: 'Moleküler Biyoloji ve Genetik',
+    role: 'rep',
+    faculty: 'mbg',
     image: '/images/team-new/5selen-arici-molekuler-biyoloji-ve-genetik-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/sselenarc',
     linkedin: 'https://www.linkedin.com/in/selen-ar'
   },
   {
     name: 'Nevval Sena Altunsoy',
-    role: 'Temsilci',
-    faculty: 'Tıp Fakültesi',
+    role: 'rep',
+    faculty: 'med',
     image: '/images/team-new/6nevval-sena-altunsoy-tip-fakultesi-temsilcisi.jpeg',
     instagram: '',
     linkedin: 'https://www.linkedin.com/in/nevval-sena-altunsoy/'
   },
   {
     name: 'Hümeyra Özkan',
-    role: 'Temsilci',
-    faculty: 'Diş Hekimliği',
+    role: 'rep',
+    faculty: 'dent',
     image: '/images/team-new/7humeyra-ozkan-dis-hekimliligi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/humeyra.ozkn',
     linkedin: 'https://www.linkedin.com/in/humeyra-'
   },
   {
     name: 'Emine Açıkgöz',
-    role: 'Temsilci',
-    faculty: 'Hemşirelik',
+    role: 'rep',
+    faculty: 'nurs',
     image: '/images/team-new/8emine-acikgoz-hemsirelik-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/emineackgz',
     linkedin: 'http://linkedin.com/in/emine-a'
   },
   {
     name: 'Yarensu Erteğin',
-    role: 'Temsilci',
-    faculty: 'Dil ve Konuşma Terapisi',
+    role: 'rep',
+    faculty: 'slt',
     image: '/images/team-new/9yarensu-ertegin-dil-ve-konusma-terapisi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/yarensuertegin',
     linkedin: ''
   },
   {
     name: 'Meryem Büşra Albayrak',
-    role: 'Temsilci',
-    faculty: 'Fizyoterapi ve Rehabilitasyon',
+    role: 'rep',
+    faculty: 'pt',
     image: '/images/team-new/10meryem-busra-albayrak-fizyoterapi-ve-rehabilitasyon-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/albayrakk_mrym',
     linkedin: 'https://www.linkedin.com/in/meryem-b'
   },
   {
     name: 'İrem Korkmaz',
-    role: 'Temsilci',
-    faculty: 'Psikoloji',
+    role: 'rep',
+    faculty: 'psych',
     image: '/images/team-new/11irem-korkmaz-psikoloji-bolumu-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/iremkrkmaz',
     linkedin: 'https://www.linkedin.com/in/irem-korkmaz-'
   },
   {
     name: 'Açelya Taştan',
-    role: 'Temsilci',
-    faculty: 'Dijital Oyun Tasarımı',
+    role: 'rep',
+    faculty: 'dgd',
     image: '/images/team-new/12acelya-tastan-dijital-oyun-tasarimi.jpeg',
     instagram: 'https://www.instagram.com/acelyatst',
     linkedin: 'https://www.linkedin.com/in/acelyatst'
   },
   {
     name: 'Reyhan Ekici',
-    role: 'Temsilci',
-    faculty: 'Bilgisayar Mühendisliği',
+    role: 'rep',
+    faculty: 'ce',
     image: '/images/team-new/13reyhan-ekici-bilgisayar-muhendisligi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/reyhanekiciii',
     linkedin: 'https://www.linkedin.com/in/reyhan-ekici-'
   },
   {
     name: 'Hazal Karaduman',
-    role: 'Temsilci',
-    faculty: 'Endüstri Mühendisliği',
+    role: 'rep',
+    faculty: 'ie',
     image: '/images/team-new/14hazal-karaduman-endustri-muhendisligi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/hazallkrdmnn',
     linkedin: 'https://www.linkedin.com/in/hazal-karaduman-'
   },
   {
     name: 'Mustafa Alheswani',
-    role: 'Temsilci',
-    faculty: 'Yazılım Mühendisliği',
+    role: 'rep',
+    faculty: 'se',
     image: '/images/team-new/15mustafa-alheswani-yazilim-muhendisligi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/mustafaheswani1',
     linkedin: 'https://www.linkedin.com/in/mustafa-alheswani-'
   },
   {
     name: 'Tuana Sıla Yüksel',
-    role: 'Temsilci',
-    faculty: 'Görsel İletişim Tasarımı',
+    role: 'rep',
+    faculty: 'vcd',
     image: '/images/team-new/16tuana-sila-yuksel-gorsel-iletisim-tasarimi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/silaaqt',
     linkedin: 'https://www.linkedin.com/in/tuana-s'
   },
   {
     name: 'Pınar Gökçe',
-    role: 'Temsilci',
-    faculty: 'İç Mimarlık ve Çevre Tasarımı',
+    role: 'rep',
+    faculty: 'iaed',
     image: '/images/team-new/17pinar-gokce-ic-mimarlik-ve-cevre-tasarimi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/pnaargkc',
     linkedin: ''
   },
   {
     name: 'Berre Dedeoğlu',
-    role: 'Temsilci',
-    faculty: 'Mütercim Tercümanlık',
+    role: 'rep',
+    faculty: 'ti',
     image: '/images/team-new/18berre-dedeoglu-mutercim-tercumanlik-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/iambredl',
     linkedin: 'https://www.linkedin.com/in/berre-dedeo'
   },
   {
     name: 'Saif Daghlas',
-    role: 'Int. Student Rep.',
-    faculty: 'Bilgisayar Mühendisliği',
+    role: 'intRep',
+    faculty: 'ce',
     image: '/images/team-new/19saif-daghlas-bilgisayar-muhendisligi-international-student-representative.jpeg',
     instagram: 'https://www.instagram.com/xbattar/',
     linkedin: 'https://www.linkedin.com/in/saif-daghlas-1694b5367/'
   },
   {
     name: 'Azranur Demirtaş',
-    role: 'Temsilci',
-    faculty: 'Yazılım Mühendisliği',
+    role: 'rep',
+    faculty: 'se',
     image: '/images/team-new/20azranur-demirtas-yazilim-muhendisligi-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/demirtasazraa',
     linkedin: 'https://www.linkedin.com/in/azranur-demirtaş-'
   },
   {
     name: 'Esmanur Timur',
-    role: 'Temsilci',
-    faculty: 'Psikoloji',
+    role: 'rep',
+    faculty: 'psych',
     image: '/images/team-new/21esmanur-timur-psikoloji-bolumu-temsilcisi.jpeg',
     instagram: 'https://www.instagram.com/esmanurtimur_',
     linkedin: ''
@@ -188,6 +191,8 @@ const teamMembers: TeamMember[] = [
 
 const Team = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.team;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -209,12 +214,12 @@ const Team = () => {
       <div className="container-custom relative z-10">
         {/* Header */}
         <div className="team-header text-center max-w-3xl mx-auto mb-16">
-          <span className="section-label">Ekibimiz</span>
+          <span className="section-label">{t.label}</span>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">
-            Vizyonun Arkasındaki Güç
+            {t.headline}
           </h2>
           <p className="text-lg text-[#94a3b8]">
-            Farklı disiplinlerden gelen, aynı vizyonu paylaşan liderler.
+            {t.desc}
           </p>
         </div>
 
@@ -228,8 +233,6 @@ const Team = () => {
                   fill
                   className="object-cover transition-all duration-500 grayscale-[20%] group-hover:grayscale-0 group-hover:scale-105"
                   onError={(e) => {
-                    // Fallback handled via error boundary or state if needed, but next/image handles loading differently. 
-                    // Simpler to just let it fail or use a placeholder blur.
                     const target = e.target as HTMLImageElement;
                     if (target.src !== '/images/general/hero-image.jpg') {
                       target.src = '/images/general/hero-image.jpg';
@@ -263,8 +266,8 @@ const Team = () => {
                 <h3 className="text-base sm:text-lg font-semibold text-white mb-1 group-hover:text-[#d4af37] transition-colors leading-tight">
                   {member.name}
                 </h3>
-                <p className="text-xs sm:text-sm mb-1 text-[#d4af37] font-medium">{member.role}</p>
-                <p className="text-[10px] sm:text-xs text-[#64748b] leading-tight">{member.faculty}</p>
+                <p className="text-xs sm:text-sm mb-1 text-[#d4af37] font-medium">{t.roles[member.role as keyof typeof t.roles]}</p>
+                <p className="text-[10px] sm:text-xs text-[#64748b] leading-tight">{t.faculties[member.faculty as keyof typeof t.faculties]}</p>
               </div>
             </div>
           ))}

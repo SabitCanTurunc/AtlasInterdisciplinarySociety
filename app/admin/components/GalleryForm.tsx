@@ -3,8 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function GalleryForm() {
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.admin.gallery;
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -49,13 +52,13 @@ export default function GalleryForm() {
                 const uploadData = await uploadRes.json();
 
                 if (!uploadRes.ok) {
-                    throw new Error(uploadData.error || 'Görsel sunucuya yüklenemedi.');
+                    throw new Error(uploadData.error || t.errorMsg);
                 }
 
                 imageUrl = uploadData.url;
                 publicId = uploadData.url; // /api/upload sadece URL dönüyor olabilir, veya publicId dönüyorsa onu alabiliriz
             } else {
-                toast.error('Lütfen bir görsel seçin');
+                toast.error(t.imageFile);
                 setIsLoading(false);
                 return;
             }
@@ -74,10 +77,10 @@ export default function GalleryForm() {
 
             if (!res.ok) {
                 const data = await res.json();
-                throw new Error(data.message || 'Bir hata oluştu');
+                throw new Error(data.message || t.errorMsg);
             }
 
-            toast.success('Görsel başarıyla eklendi');
+            toast.success(t.successAdded);
 
             // Sıfırla
             setTitle('');
@@ -94,22 +97,22 @@ export default function GalleryForm() {
 
     return (
         <form onSubmit={handleSubmit} className="bg-[#111d32] border border-[#1e3a5f] p-6 rounded-xl space-y-4">
-            <h2 className="text-xl font-semibold mb-4 text-[#d4af37]">Yeni Görsel Ekle</h2>
+            <h2 className="text-xl font-semibold mb-4 text-[#d4af37]">{t.addTitle}</h2>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Başlık / Açıklama</label>
+                <label className="block text-sm font-medium mb-1">{t.imageTitle}</label>
                 <input
                     type="text"
                     required
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     className="w-full bg-[#0a1628] border border-[#1e3a5f] rounded-lg px-4 py-2 focus:outline-none focus:border-[#d4af37]"
-                    placeholder="Görsel açıklaması"
+                    placeholder={t.imageTitle}
                 />
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Görsel (Önerilen: 4:3 format veya yatay)</label>
+                <label className="block text-sm font-medium mb-1">{t.imageFile}</label>
                 <input
                     type="file"
                     accept="image/*"
@@ -133,7 +136,7 @@ export default function GalleryForm() {
                 {isLoading ? (
                     <div className="w-6 h-6 border-2 border-[#0a1628] border-t-transparent rounded-full animate-spin"></div>
                 ) : (
-                    'Galeriye Ekle'
+                    t.submitBtn
                 )}
             </button>
         </form>

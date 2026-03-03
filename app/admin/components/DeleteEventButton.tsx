@@ -3,13 +3,16 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, Loader2 } from 'lucide-react';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function DeleteEventButton({ eventId }: { eventId: string }) {
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.admin.events;
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
     const handleDelete = async () => {
-        if (!confirm('Bu etkinliği silmek istediğinize emin misiniz?')) return;
+        if (!confirm(allTranslations.admin.publications.deleteConfirm)) return;
 
         setLoading(true);
         try {
@@ -19,10 +22,10 @@ export default function DeleteEventButton({ eventId }: { eventId: string }) {
             if (res.ok) {
                 router.refresh();
             } else {
-                alert('Etkinlik silinirken bir hata oluştu.');
+                alert(allTranslations.admin.gallery.errorMsg);
             }
         } catch (e) {
-            alert('Bir hata oluştu.');
+            alert(allTranslations.admin.gallery.errorMsg);
         } finally {
             setLoading(false);
         }
@@ -33,7 +36,7 @@ export default function DeleteEventButton({ eventId }: { eventId: string }) {
             onClick={handleDelete}
             disabled={loading}
             className="text-red-400 hover:text-red-300 transition-colors p-2 disabled:opacity-50"
-            title="Etkinliği Sil"
+            title={allTranslations.admin.publications.deleteBtn}
         >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
         </button>

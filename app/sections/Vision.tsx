@@ -1,12 +1,17 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Lightbulb, Users, Target } from 'lucide-react';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Vision = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.home.vision;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -29,18 +34,18 @@ const Vision = () => {
   const pillars = [
     {
       icon: Target,
-      title: 'Sürekli Gelişim',
-      description: 'Değişime açık, gelişime odaklı bir yaklaşımla kendimizi sürekli yeniliyoruz.',
+      title: t.pillars.development.title,
+      description: t.pillars.development.desc,
     },
     {
       icon: Users,
-      title: 'Birlikte Güçlenme',
-      description: 'Kolektif bilgi ve deneyimle güçlü bireyler yetiştiriyoruz.',
+      title: t.pillars.collaboration.title,
+      description: t.pillars.collaboration.desc,
     },
     {
       icon: Lightbulb,
-      title: 'Fark Yaratmak',
-      description: 'Özgür alanlarda büyüyen fikirlerle topluma değer katıyoruz.',
+      title: t.pillars.impact.title,
+      description: t.pillars.impact.desc,
     },
   ];
 
@@ -53,25 +58,23 @@ const Vision = () => {
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-16 lg:gap-24 items-start">
           {/* Left Content */}
           <div>
-            <span className="vision-label section-label">Vizyonumuz</span>
-            
+            <span className="vision-label section-label">{t.label}</span>
+
             <h2 className="vision-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
-              {'Bireysel Güç, Kolektif Akıl'.split(' ').map((word, i) => (
+              {t.headline.split(' ').map((word, i) => (
                 <span key={i} className="inline-block mr-[0.3em]">{word}</span>
               ))}
             </h2>
 
             <div className="vision-body space-y-6">
               <p className="text-lg leading-relaxed text-[#94a3b8]">
-                ATLAS INTERDISCIPLINARY SOCIETY (A.I.S.), öğrencilerini özgür düşünmeye, 
-                yenilik üretmeye ve geleceği şekillendirmeye teşvik eden bir vizyon platformudur.
+                {t.p1}
               </p>
               <p className="text-lg leading-relaxed text-[#94a3b8]">
-                Multidisipliner ekibi ve temsilcileri ile sürekli gelişim, değişim ve 
-                birlik içinde güçlenmeyi hedefler.
+                {t.p2}
               </p>
               <p className="text-xl font-medium text-[#d4af37] italic border-l-4 border-[#d4af37] pl-6 py-2">
-                &ldquo;Bireysel gücü kolektif akılla buluşturur; fark yaratan fikirler, özgür alanlarda büyür.&rdquo;
+                {t.quote}
               </p>
             </div>
           </div>

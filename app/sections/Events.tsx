@@ -1,12 +1,17 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Calendar, MapPin, Users, Video } from 'lucide-react';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Events = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.events;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -33,10 +38,10 @@ const Events = () => {
   }, []);
 
   const eventCategories = [
-    { title: 'Sosyal Sorumluluk', desc: 'Topluma değer katan projeler.', icon: Users },
-    { title: 'Akademi ve Bilim', desc: 'Sektör liderleriyle söyleşiler.', icon: Video },
-    { title: 'Liderlik Atölyeleri', desc: 'Kişisel ve profesyonel gelişim.', icon: MapPin },
-    { title: 'Atlas Summit', desc: 'Disiplinlerarası büyük zirve.', icon: Calendar },
+    { title: t.categories.social.title, desc: t.categories.social.desc, icon: Users },
+    { title: t.categories.science.title, desc: t.categories.science.desc, icon: Video },
+    { title: t.categories.leadership.title, desc: t.categories.leadership.desc, icon: MapPin },
+    { title: t.categories.summit.title, desc: t.categories.summit.desc, icon: Calendar },
   ];
 
   return (
@@ -45,12 +50,12 @@ const Events = () => {
 
         {/* Header */}
         <div className="events-header text-center max-w-3xl mx-auto mb-16">
-          <span className="section-label text-[#d4af37]">Etkinliklerimiz</span>
+          <span className="section-label text-[#d4af37]">{t.label}</span>
           <h2 className="text-4xl sm:text-5xl font-bold text-[#0a1628] mb-6">
-            Bilgiyi Eyleme Dönüştür
+            {t.headline}
           </h2>
           <p className="text-lg text-[#64748b]">
-            Teorik bilginin ötesine geçen, interaktif ve geliştirici etkinlikler.
+            {t.desc}
           </p>
         </div>
 
@@ -74,22 +79,22 @@ const Events = () => {
           <div className="relative z-10 p-8 md:p-16 grid md:grid-cols-2 gap-12 items-center">
             <div>
               <span className="inline-block px-3 py-1 rounded-full bg-[#d4af37] text-[#0a1628] text-xs font-bold mb-4">
-                YAKLAŞAN ETKİNLİK
+                {t.featured.badge}
               </span>
               <h3 className="text-3xl md:text-4xl font-bold mb-6">
-                Atlas Interdisciplinary Summit &apos;26
+                {t.featured.title}
               </h3>
               <p className="text-slate-300 mb-8 text-lg">
-                Farklı disiplinlerden uzmanların bir araya geleceği, geleceğin teknolojilerinin tartışılacağı büyük zirveye hazır mısın?
+                {t.featured.desc}
               </p>
 
               <div className="flex flex-wrap gap-4">
                 <a href="https://forms.google.com/..." target="_blank" rel="noopener noreferrer"
                   className="btn-primary bg-[#d4af37] text-[#0a1628] hover:bg-[#c4a030] border-none px-8 py-4 rounded-lg font-bold transition-all transform hover:scale-105">
-                  Hemen Kayıt Ol
+                  {t.featured.registerBtn}
                 </a>
                 <button className="px-8 py-4 rounded-lg font-bold border border-white/20 hover:bg-white/10 transition-colors">
-                  Detaylı Bilgi
+                  {t.featured.detailsBtn}
                 </button>
               </div>
             </div>
@@ -100,20 +105,20 @@ const Events = () => {
                 <div className="flex items-start gap-4">
                   <Calendar className="w-6 h-6 text-[#d4af37] mt-1" />
                   <div>
-                    <h4 className="font-bold text-lg">Tarih</h4>
-                    <p className="text-slate-300">15 Mayıs 2026</p>
+                    <h4 className="font-bold text-lg">{t.featured.dateLabel}</h4>
+                    <p className="text-slate-300">{t.featured.dateValue}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
                   <MapPin className="w-6 h-6 text-[#d4af37] mt-1" />
                   <div>
-                    <h4 className="font-bold text-lg">Konum</h4>
-                    <p className="text-slate-300">Vadi Yerleşkesi Konferans Salonu</p>
+                    <h4 className="font-bold text-lg">{t.featured.locationLabel}</h4>
+                    <p className="text-slate-300">{t.featured.locationValue}</p>
                   </div>
                 </div>
                 <div className="pt-6 border-t border-white/10">
                   <p className="text-sm text-slate-400">
-                    * Kontenjan sınırlıdır. Erken kayıt avantajlarından yararlanmak için formu doldurmayı unutmayın.
+                    {t.featured.note}
                   </p>
                 </div>
               </div>

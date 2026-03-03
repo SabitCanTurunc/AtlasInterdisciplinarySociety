@@ -1,15 +1,20 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Mail, MapPin, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.home.contact;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -54,30 +59,30 @@ const Contact = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Headline */}
           <h2 className="contact-headline text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8">
-            {'Bize Katıl'.split(' ').map((word, i) => (
+            {t.headline.split(' ').map((word, i) => (
               <span key={i} className="inline-block mr-[0.25em]">{word}</span>
             ))}
           </h2>
 
           {/* Body */}
           <p className="contact-body text-lg sm:text-xl max-w-2xl mx-auto mb-12 text-[#94a3b8]">
-            Geleceği şekillendirmek için ilk adımı at. A.I.S. ailesine katıl, fark yarat.
+            {t.desc}
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <Link href="/register" className="contact-cta btn-primary text-lg px-10 py-5 group">
-              Üye Ol
+              {t.ctaJoin}
               <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
             </Link>
 
             {pathname === '/' ? (
               <Link href="/contact" className="contact-cta btn-secondary text-lg px-10 py-5">
-                İletişime Geç
+                {t.ctaContact}
               </Link>
             ) : (
               <a href="https://chat.whatsapp.com/C7SuSBDjYhyBvnvctSLB2i" target="_blank" rel="noopener noreferrer" className="contact-cta btn-secondary text-lg px-10 py-5 flex items-center">
-                WhatsApp Topluluğuna Katıl
+                {t.ctaWhatsApp}
               </a>
             )}
           </div>

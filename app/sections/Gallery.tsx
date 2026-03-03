@@ -7,6 +7,7 @@ import Image from 'next/image';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { getGalleryImages } from '../actions/gallery';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +27,8 @@ const Gallery = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const [images, setImages] = useState<GalleryImage[]>(defaultImages);
     const [isLoading, setIsLoading] = useState(true);
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.home.gallery;
 
     const [emblaRef] = useEmblaCarousel(
         { loop: true, align: 'start', dragFree: true },
@@ -71,12 +74,12 @@ const Gallery = () => {
 
             <div className="container-custom relative z-10">
                 <div className="gallery-header text-center mb-16">
-                    <span className="section-label text-[#d4af37]">Galeri</span>
+                    <span className="section-label text-[#d4af37]">{t.label}</span>
                     <h2 className="text-4xl sm:text-5xl font-bold mb-6">
-                        Anılarımız
+                        {t.headline}
                     </h2>
                     <p className="text-lg text-[#94a3b8] max-w-2xl mx-auto">
-                        Birlikte başardığımız, eğlendiğimiz ve öğrendiğimiz anlardan kareler.
+                        {t.desc}
                     </p>
                 </div>
 

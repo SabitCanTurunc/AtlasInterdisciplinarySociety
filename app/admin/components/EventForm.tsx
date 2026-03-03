@@ -4,8 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2, UploadCloud } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function EventForm() {
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.admin.events;
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
@@ -52,11 +55,11 @@ export default function EventForm() {
                 const uploadResult = await uploadRes.json();
 
                 if (!uploadRes.ok) {
-                    throw new Error(uploadResult.error || uploadResult.message || 'Resim yüklenemedi.');
+                    throw new Error(uploadResult.error || uploadResult.message || allTranslations.admin.gallery.errorMsg);
                 }
 
                 uploadedImageUrl = uploadResult.url;
-                toast.success('Görsel başarıyla yüklendi.');
+                toast.success(allTranslations.admin.gallery.successAdded);
             }
 
             const res = await fetch('/api/admin/events', {
@@ -68,15 +71,15 @@ export default function EventForm() {
             const data = await res.json();
 
             if (!res.ok) {
-                toast.error(data.message || 'Bir hata oluştu.');
+                toast.error(data.message || allTranslations.admin.gallery.errorMsg);
             } else {
-                toast.success('Etkinlik başarıyla eklendi!');
+                toast.success(t.successAdded);
                 setFormData({ title: '', description: '', date: '', location: '', locationLink: '', imageUrl: '', requiresRegistration: false });
                 setImageFile(null);
                 router.refresh(); // Refresh to show new event in the list
             }
         } catch (err: any) {
-            toast.error(err.message || 'Bir hata oluştu.');
+            toast.error(err.message || allTranslations.admin.gallery.errorMsg);
         } finally {
             setLoading(false);
         }
@@ -84,12 +87,12 @@ export default function EventForm() {
 
     return (
         <div className="bg-[#111d32] rounded-xl p-6 border border-[#1e3a5f] mb-8">
-            <h2 className="text-xl font-semibold mb-4 text-white">Yeni Etkinlik Ekle</h2>
+            <h2 className="text-xl font-semibold mb-4 text-white">{t.addTitle}</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">Başlık</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">{t.eventTitle}</label>
                         <input
                             type="text"
                             name="title"
@@ -100,7 +103,7 @@ export default function EventForm() {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">Tarih ve Saat</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">{t.eventDate}</label>
                         <input
                             type="datetime-local"
                             name="date"
@@ -116,7 +119,7 @@ export default function EventForm() {
                         />
                     </div>
                     <div className="md:col-span-1">
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">Konum</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">{t.eventLocation}</label>
                         <input
                             type="text"
                             name="location"
@@ -127,7 +130,7 @@ export default function EventForm() {
                         />
                     </div>
                     <div className="md:col-span-1">
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">Konum Linki (Opsiyonel Google Haritalar vs.)</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">{t.eventLocationLink}</label>
                         <input
                             type="url"
                             name="locationLink"
@@ -138,11 +141,11 @@ export default function EventForm() {
                         />
                     </div>
                     <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">Etkinlik Görseli</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">{t.eventImage}</label>
                         <div className="flex items-center gap-4">
                             <label className="cursor-pointer bg-[#0a1628] border border-[#1e3a5f] hover:border-[#d4af37] transition-colors rounded-lg py-2 px-4 flex items-center gap-2 text-[#cbd5e1]">
                                 <UploadCloud className="w-5 h-5 text-[#d4af37]" />
-                                <span>{imageFile ? imageFile.name : 'Cihazdan Seç...'}</span>
+                                <span>{imageFile ? imageFile.name : allTranslations.admin.gallery.imageFile}</span>
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -150,7 +153,7 @@ export default function EventForm() {
                                     className="hidden"
                                 />
                             </label>
-                            <span className="text-[#64748b] text-sm">veya</span>
+                            <span className="text-[#64748b] text-sm">-</span>
                             <input
                                 type="url"
                                 name="imageUrl"
@@ -158,12 +161,12 @@ export default function EventForm() {
                                 onChange={handleChange}
                                 disabled={!!imageFile}
                                 className="flex-1 bg-[#0a1628] border border-[#1e3a5f] rounded-lg py-2 px-3 text-white focus:outline-none focus:border-[#d4af37] disabled:opacity-50"
-                                placeholder="Görsel URL'si yapıştırın..."
+                                placeholder="..."
                             />
                         </div>
                     </div>
                     <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">Açıklama</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-1">{t.eventDesc}</label>
                         <textarea
                             name="description"
                             value={formData.description}
@@ -182,7 +185,7 @@ export default function EventForm() {
                                 onChange={handleChange}
                                 className="w-4 h-4 rounded border-[#1e3a5f] bg-[#0a1628] text-[#d4af37] focus:ring-[#d4af37] focus:ring-offset-[#111d32]"
                             />
-                            Üye Kaydı Al
+                            {t.requiresReg}
                         </label>
                     </div>
                 </div>
@@ -193,7 +196,7 @@ export default function EventForm() {
                         disabled={loading}
                         className="btn-primary py-2 px-6 rounded-lg font-medium flex items-center gap-2 disabled:opacity-70"
                     >
-                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Etkinlik Ekle'}
+                        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : t.submitBtn}
                     </button>
                 </div>
             </form>

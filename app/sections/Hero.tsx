@@ -1,9 +1,14 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.home.hero;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -57,9 +62,9 @@ const Hero = () => {
   }, []);
 
   const stats = [
-    { value: '500+', label: 'Aktif Üye' },
-    { value: '10+', label: 'Fakülte' },
-    { value: '10+', label: 'Proje' },
+    { value: '500+', label: t.stats.members },
+    { value: '10+', label: t.stats.faculties },
+    { value: '10+', label: t.stats.projects },
   ];
 
   return (
@@ -92,26 +97,26 @@ const Hero = () => {
           <div className="mb-8">
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[0.95] tracking-tight">
               <span className="headline-line block overflow-hidden">
-                <span className="inline-block text-white">Geleceği</span>
+                <span className="inline-block text-white">{t.headline[0]}</span>
               </span>
               <span className="headline-line block overflow-hidden">
-                <span className="inline-block text-white">Birlikte</span>
+                <span className="inline-block text-white">{t.headline[1]}</span>
               </span>
               <span className="headline-line block overflow-hidden">
-                <span className="inline-block text-[#d4af37]">Şekillendiriyoruz</span>
+                <span className="inline-block text-[#d4af37]">{t.headline[2]}</span>
               </span>
             </h1>
           </div>
 
           {/* Subtitle */}
           <p className="hero-subtitle text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto mb-10 leading-relaxed text-[#94a3b8]">
-            İstanbul Atlas Üniversitesi&apos;nin disiplinlerarası vizyon platformu
+            {t.subtitle}
           </p>
 
           {/* CTA */}
           <div className="hero-cta mb-16">
             <a href="#vizyon" className="btn-primary text-lg px-10 py-5 group">
-              Keşfet
+              {t.cta}
               <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
             </a>
           </div>

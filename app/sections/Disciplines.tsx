@@ -5,34 +5,38 @@ import {
   Brain, Code, HeartPulse, FlaskConical, Stethoscope, Briefcase,
   Mic2, Activity, Gamepad2, Laptop, MonitorPlay, Zap, PencilRuler
 } from 'lucide-react';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const disciplines = [
-  { name: 'Tıp', icon: Stethoscope },
-  { name: 'Diş Hekimliği', icon: Activity },
-  { name: 'Hemşirelik', icon: HeartPulse },
-  { name: 'Ebelik', icon: HeartPulse },
-  { name: 'Fizyoterapi ve Rehabilitasyon', icon: Activity },
-  { name: 'Dil ve Konuşma Terapisi', icon: Mic2 },
-  { name: 'Psikoloji', icon: Brain },
-  { name: 'Moleküler Biyoloji ve Genetik', icon: FlaskConical },
-  { name: 'Bilgisayar Mühendisliği', icon: Laptop },
-  { name: 'Yazılım Mühendisliği', icon: Code },
-  { name: 'Endüstri Mühendisliği', icon: Briefcase },
-  { name: 'Elektrik Elektronik Müh.', icon: Zap },
-  { name: 'Dijital Oyun Tasarımı', icon: Gamepad2 },
-  { name: 'Görsel İletişim Tasarımı', icon: MonitorPlay },
-  { name: 'İç Mimarlık ve Çevre Tasarımı', icon: PencilRuler },
-  { name: 'Mütercim Tercümanlık', icon: Mic2 },
-  { name: 'İşletme', icon: Briefcase },
-];
 
 const Disciplines = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   // Default to horizontal layout for SSR/initial render
   const [layout, setLayout] = useState<number[]>([6, 5, 6]);
+
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.disciplines;
+
+  const disciplines = useMemo(() => [
+    { name: t.list.medicine, icon: Stethoscope },
+    { name: t.list.dentistry, icon: Activity },
+    { name: t.list.nursing, icon: HeartPulse },
+    { name: t.list.midwifery, icon: HeartPulse },
+    { name: t.list.physiotherapy, icon: Activity },
+    { name: t.list.speechTherapy, icon: Mic2 },
+    { name: t.list.psychology, icon: Brain },
+    { name: t.list.molecularBiology, icon: FlaskConical },
+    { name: t.list.computerEng, icon: Laptop },
+    { name: t.list.softwareEng, icon: Code },
+    { name: t.list.industrialEng, icon: Briefcase },
+    { name: t.list.electricalEng, icon: Zap },
+    { name: t.list.digitalGameDesign, icon: Gamepad2 },
+    { name: t.list.visualCommunication, icon: MonitorPlay },
+    { name: t.list.interiorArchitecture, icon: PencilRuler },
+    { name: t.list.translation, icon: Mic2 },
+    { name: t.list.business, icon: Briefcase },
+  ], [t]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -109,7 +113,7 @@ const Disciplines = () => {
       currentIndex += count;
     }
     return result;
-  }, [layout]);
+  }, [layout, disciplines]);
 
   return (
     <section
@@ -133,10 +137,10 @@ const Disciplines = () => {
         <div className="discipline-header text-center max-w-4xl mx-auto mb-24 relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#d4af37]/20 blur-[100px] rounded-full pointer-events-none" />
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tighter relative z-10">
-            DİSİPLİNLER <span className="text-[#d4af37]">AĞI</span>
+            {t.title1} <span className="text-[#d4af37]">{t.title2}</span>
           </h2>
           <p className="text-[#fbbf24] font-light text-lg max-w-2xl mx-auto leading-relaxed relative z-10">
-            Yatayda genişleyen, birbirine kenetlenmiş kolektif zeka hücreleri.
+            {t.subtitle}
           </p>
         </div>
 

@@ -3,13 +3,16 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function DeleteGalleryImageButton({ imageId }: { imageId: string }) {
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.admin.gallery;
     const router = useRouter();
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleDelete = async () => {
-        if (!confirm('Bu görseli silmek istediğinize emin misiniz?')) {
+        if (!confirm(t.deleteMsg)) {
             return;
         }
 
@@ -22,10 +25,10 @@ export default function DeleteGalleryImageButton({ imageId }: { imageId: string 
 
             if (!res.ok) {
                 const data = await res.json();
-                throw new Error(data.message || 'Silme işlemi başarısız');
+                throw new Error(data.message || t.errorMsg);
             }
 
-            toast.success('Görsel başarıyla silindi');
+            toast.success(t.successDeleted);
             router.refresh();
         } catch (error: any) {
             toast.error(error.message);
@@ -39,7 +42,7 @@ export default function DeleteGalleryImageButton({ imageId }: { imageId: string 
             onClick={handleDelete}
             disabled={isDeleting}
             className="bg-red-500/20 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/30 p-2 rounded-lg transition-colors"
-            title="Görseli Sil"
+            title={t.deleteBtn}
         >
             {isDeleting ? (
                 <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>

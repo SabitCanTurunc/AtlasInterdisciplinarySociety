@@ -1,8 +1,11 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { BookOpen, Newspaper, FileText, ArrowRight, FileSignature, Book } from 'lucide-react';
 import { getActivePublications } from '../actions/publications';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +25,8 @@ const Publications = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [publications, setPublications] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.publications;
 
   useEffect(() => {
     const loadPublications = async () => {
@@ -68,12 +73,12 @@ const Publications = () => {
 
           {/* Left Content */}
           <div className="lg:w-1/2 pub-header">
-            <span className="section-label text-[#d4af37] mb-4 block">Kütüphane</span>
+            <span className="section-label text-[#d4af37] mb-4 block">{t.label}</span>
             <h2 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
-              Bilgiyi Paylaşarak Çoğaltıyoruz
+              {t.headline}
             </h2>
             <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-              Kulübümüzün ürettiği dergiler, araştırma raporları ve bültenlerle akademik dünyaya katkı sağlıyoruz. Öğrenci çalışmaları, makaleler ve daha fazlası burada.
+              {t.desc}
             </p>
           </div>
 
@@ -85,7 +90,7 @@ const Publications = () => {
               </div>
             ) : publications.length === 0 ? (
               <div className="text-center bg-white/5 border border-white/10 rounded-xl p-8">
-                <p className="text-slate-400">Şu an yayında olan bir içerik bulunmuyor.</p>
+                <p className="text-slate-400">{t.emptyState}</p>
               </div>
             ) : (
               publications.map((pub) => {

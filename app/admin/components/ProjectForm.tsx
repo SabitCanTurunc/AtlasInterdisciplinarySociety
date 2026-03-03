@@ -5,8 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Loader2, Upload, AlertCircle, Plus, ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function ProjectForm() {
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.admin.projects;
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -46,9 +49,9 @@ export default function ProjectForm() {
             }
 
             setFormData(prev => ({ ...prev, imageUrl: data.url }));
-            toast.success('Görsel başarıyla yüklendi');
+            toast.success(allTranslations.admin.gallery.successAdded);
         } catch (err: any) {
-            const errorMessage = err.message || 'Resim yükleme hatası';
+            const errorMessage = err.message || allTranslations.admin.gallery.errorMsg;
             setError(errorMessage);
             toast.error(errorMessage);
         } finally {
@@ -62,7 +65,7 @@ export default function ProjectForm() {
         setError('');
 
         if (!formData.imageUrl) {
-            setError('Lütfen bir proje görseli yükleyin.');
+            setError(allTranslations.admin.gallery.imageFile);
             setLoading(false);
             return;
         }
@@ -77,7 +80,7 @@ export default function ProjectForm() {
             const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.message || 'Proje oluşturulamadı');
+                throw new Error(data.message || allTranslations.admin.gallery.errorMsg);
             }
 
             setFormData({
@@ -91,10 +94,10 @@ export default function ProjectForm() {
                 featured: false,
             });
 
-            toast.success('Proje başarıyla oluşturuldu!');
+            toast.success(t.successAdded);
             router.refresh();
         } catch (err: any) {
-            const errorMessage = err.message || 'Bir hata oluştu';
+            const errorMessage = err.message || allTranslations.admin.gallery.errorMsg;
             setError(errorMessage);
             toast.error(errorMessage);
         } finally {
@@ -106,7 +109,7 @@ export default function ProjectForm() {
         <div className="bg-[#111d32] border border-[#1e3a5f] rounded-xl p-6">
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                 <Plus className="w-5 h-5 text-[#d4af37]" />
-                Yeni Proje Ekle
+                {t.addTitle}
             </h2>
 
             {error && (
@@ -119,7 +122,7 @@ export default function ProjectForm() {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">Proje Başlığı</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">{t.projTitle}</label>
                         <input
                             type="text"
                             required
@@ -131,7 +134,7 @@ export default function ProjectForm() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">Kategori</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">{t.projCat}</label>
                         <input
                             type="text"
                             required
@@ -143,7 +146,7 @@ export default function ProjectForm() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">Metrikler / Sayısal Değerler</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">{t.projMetrics}</label>
                         <input
                             type="text"
                             required
@@ -155,7 +158,7 @@ export default function ProjectForm() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">Durum</label>
+                        <label className="block text-sm font-medium text-[#cbd5e1] mb-2">{t.projStatus}</label>
                         <input
                             type="text"
                             required
@@ -168,31 +171,29 @@ export default function ProjectForm() {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-[#cbd5e1] mb-2">Kısa Açıklama (Kart Gösterimi)</label>
+                    <label className="block text-sm font-medium text-[#cbd5e1] mb-2">{t.projShortDesc}</label>
                     <textarea
                         required
                         value={formData.shortDescription}
                         onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
                         className="w-full bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-3 text-white focus:outline-none focus:border-[#d4af37] min-h-[80px]"
-                        placeholder="Örn: 50+ drone ile ortak zeka ağı..."
                         maxLength={150}
                     />
                     <p className="text-xs text-[#64748b] mt-1 text-right">{formData.shortDescription.length}/150</p>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-[#cbd5e1] mb-2">Detaylı Açıklama (Proje Sayfası)</label>
+                    <label className="block text-sm font-medium text-[#cbd5e1] mb-2">{t.projDesc}</label>
                     <textarea
                         required
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         className="w-full bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-3 text-white focus:outline-none focus:border-[#d4af37] min-h-[150px]"
-                        placeholder="Projenin işleyişi, amacı, detayları..."
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-[#cbd5e1] mb-2">Proje Görseli</label>
+                    <label className="block text-sm font-medium text-[#cbd5e1] mb-2">{t.projImage}</label>
                     <div className="flex items-start gap-6">
                         {formData.imageUrl ? (
                             <div className="relative w-40 h-24 rounded-lg overflow-hidden border border-[#1e3a5f]">
@@ -201,14 +202,13 @@ export default function ProjectForm() {
                         ) : (
                             <div className="w-40 h-24 rounded-lg border border-dashed border-[#1e3a5f] flex flex-col items-center justify-center bg-[#0a1628]/50">
                                 <ImageIcon className="w-6 h-6 text-[#64748b] mb-2" />
-                                <span className="text-xs text-[#64748b]">Görsel Yok</span>
                             </div>
                         )}
 
                         <div className="flex-1">
                             <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 bg-[#1e3a5f] hover:bg-[#2a4a7f] text-white rounded-lg transition-colors text-sm font-medium">
                                 {uploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                                {uploadingImage ? 'Yükleniyor...' : (formData.imageUrl ? 'Değiştir' : 'Görsel Seç')}
+                                {uploadingImage ? '...' : (formData.imageUrl ? '✓' : allTranslations.admin.gallery.imageFile)}
                                 <input
                                     type="file"
                                     className="hidden"
@@ -217,9 +217,6 @@ export default function ProjectForm() {
                                     disabled={uploadingImage}
                                 />
                             </label>
-                            <p className="text-xs text-[#64748b] mt-2">
-                                Maksimum dosya boyutu: 5MB. Önerilen boyut 16:9 (Örn: 1920x1080)
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -233,8 +230,7 @@ export default function ProjectForm() {
                         className="w-5 h-5 rounded border-[#1e3a5f] bg-[#0a1628] text-[#d4af37] focus:ring-[#d4af37] focus:ring-offset-[#111d32]"
                     />
                     <label htmlFor="featured" className="text-sm cursor-pointer select-none">
-                        <span className="font-medium text-white block">Vitrin Projesi Olarak İşaretle (Featured)</span>
-                        <span className="text-[#94a3b8] text-xs">Bu proje anasayfada ve projeler sayfasında en üstte büyük olarak sergilenir. Zaten bir vitrin projesi varsa, onun yerini alır.</span>
+                        <span className="font-medium text-white block">{t.isFeatured}</span>
                     </label>
                 </div>
 
@@ -245,7 +241,7 @@ export default function ProjectForm() {
                         className="px-6 py-2.5 btn-primary rounded-lg font-medium flex items-center gap-2 disabled:opacity-50"
                     >
                         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                        {loading ? 'Oluşturuluyor...' : 'Projeyi Kaydet'}
+                        {loading ? '...' : t.submitBtn}
                     </button>
                 </div>
             </form>

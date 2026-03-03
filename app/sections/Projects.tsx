@@ -1,9 +1,12 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,6 +27,8 @@ const Projects = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t: allTranslations } = useLanguage();
+  const t = allTranslations.projects;
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -137,9 +142,9 @@ const Projects = () => {
       <div className="container-custom relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="projects-label section-label">What We Build</span>
+          <span className="projects-label section-label">{t.label}</span>
           <h2 className="projects-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
-            {'Sınırları Aşan Projeler'.split('').map((char, i) => (
+            {t.headline.split('').map((char, i) => (
               <span key={i} className="inline-block">{char === ' ' ? '\u00A0' : char}</span>
             ))}
           </h2>
@@ -151,7 +156,7 @@ const Projects = () => {
           </div>
         ) : projects.length === 0 ? (
           <div className="text-center text-[#94a3b8] py-20 bg-[#111d32] border border-[#1e3a5f] rounded-2xl">
-            Henüz gösterilecek bir proje bulunmamaktadır.
+            {t.emptyState}
           </div>
         ) : (
           <div className="space-y-8">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Copy, X, Check } from 'lucide-react';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 interface Participant {
     _id: string;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 export default function ParticipantsModal({ participants }: Props) {
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.admin.events;
     const [isOpen, setIsOpen] = useState(false);
     const [copied, setCopied] = useState(false);
 
@@ -24,7 +27,7 @@ export default function ParticipantsModal({ participants }: Props) {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch (err) {
-            console.error('Kopyalama başarısız', err);
+            console.error(allTranslations.admin.gallery.errorMsg, err);
         }
     };
 
@@ -33,9 +36,9 @@ export default function ParticipantsModal({ participants }: Props) {
             <button
                 onClick={() => setIsOpen(true)}
                 className="bg-[#1a2744] text-[#d4af37] px-2 py-1 rounded font-medium hover:bg-[#1e3a5f] transition-colors"
-                title="Katılımcıları Gör"
+                title={t.participantsBtn}
             >
-                {participants.length} Katılımcı
+                {participants.length} {t.participantsBtn}
             </button>
 
             {isOpen && (
@@ -45,7 +48,7 @@ export default function ParticipantsModal({ participants }: Props) {
                     <div className="relative bg-[#111d32] border border-[#1e3a5f] rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden">
                         {/* Header */}
                         <div className="px-6 py-4 border-b border-[#1e3a5f] flex items-center justify-between bg-[#0a1628]">
-                            <h3 className="text-lg font-bold text-white">Etkinlik Katılımcıları</h3>
+                            <h3 className="text-lg font-bold text-white">{t.participantsModalTitle}</h3>
                             <button onClick={() => setIsOpen(false)} className="text-[#94a3b8] hover:text-white transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
@@ -54,7 +57,7 @@ export default function ParticipantsModal({ participants }: Props) {
                         {/* Custom scrollable content area */}
                         <div className="p-6 overflow-y-auto flex-1">
                             {participants.length === 0 ? (
-                                <p className="text-[#94a3b8] text-center italic py-4">Henüz katılımcı yok.</p>
+                                <p className="text-[#94a3b8] text-center italic py-4">{t.noParticipants}</p>
                             ) : (
                                 <ul className="space-y-3">
                                     {participants.map((p) => (
@@ -75,7 +78,7 @@ export default function ParticipantsModal({ participants }: Props) {
                                     className="flex items-center gap-2 px-4 py-2 bg-[#d4af37]/20 text-[#d4af37] rounded-lg hover:bg-[#d4af37]/30 transition-colors font-medium text-sm"
                                 >
                                     {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                                    {copied ? 'Kopyalandı!' : 'Tümünü Kopyala'}
+                                    {copied ? '✓' : t.copyEmailsList}
                                 </button>
                             </div>
                         )}

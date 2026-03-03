@@ -3,13 +3,16 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Trash2, Loader2 } from 'lucide-react';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function DeleteProjectButton({ projectId, projectTitle }: { projectId: string, projectTitle: string }) {
+    const { t: allTranslations } = useLanguage();
+    const t = allTranslations.admin.projects;
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
     const handleDelete = async () => {
-        if (!window.confirm(`"${projectTitle}" projesini silmek istediğinize emin misiniz?`)) {
+        if (!window.confirm(t.deleteConfirm.replace('{title}', projectTitle))) {
             return;
         }
 
@@ -21,13 +24,13 @@ export default function DeleteProjectButton({ projectId, projectTitle }: { proje
             });
 
             if (!res.ok) {
-                throw new Error('Proje silinemedi');
+                throw new Error(allTranslations.admin.gallery.errorMsg);
             }
 
             router.refresh();
         } catch (error) {
             console.error(error);
-            alert('Bir hata oluştu.');
+            alert(allTranslations.admin.gallery.errorMsg);
             setLoading(false);
         }
     };
@@ -37,7 +40,7 @@ export default function DeleteProjectButton({ projectId, projectTitle }: { proje
             onClick={handleDelete}
             disabled={loading}
             className="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-50"
-            title="Projeyi Sil"
+            title={t.deleteBtn}
         >
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
         </button>
