@@ -65,7 +65,7 @@ const Projects = () => {
       );
 
       gsap.fromTo(
-        '.projects-headline span',
+        '.projects-headline .headline-char',
         { opacity: 0, y: 30 },
         {
           opacity: 1,
@@ -144,8 +144,13 @@ const Projects = () => {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="projects-label section-label">{t.label}</span>
           <h2 className="projects-headline text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
-            {t.headline.split('').map((char, i) => (
-              <span key={i} className="inline-block">{char === ' ' ? '\u00A0' : char}</span>
+            {t.headline.split(' ').map((word, wordIndex, array) => (
+              <span key={wordIndex} className="inline-block">
+                {word.split('').map((char, charIndex) => (
+                  <span key={charIndex} className="inline-block headline-char">{char}</span>
+                ))}
+                {wordIndex !== array.length - 1 && <span className="inline-block headline-char">&nbsp;</span>}
+              </span>
             ))}
           </h2>
         </div>
