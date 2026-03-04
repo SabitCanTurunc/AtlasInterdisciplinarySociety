@@ -247,7 +247,12 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {users.map((user) => (
+                                            {[...users].sort((a, b) => {
+                                                const roleOrder: Record<string, number> = { super_admin: 0, admin: 1, user: 2 };
+                                                const aRole = roleOrder[a.role] ?? 3;
+                                                const bRole = roleOrder[b.role] ?? 3;
+                                                return aRole - bRole;
+                                            }).map((user) => (
                                                 <tr key={user._id.toString()} className="border-b border-[#1e3a5f] hover:bg-[#1a2744]/50 transition-colors last:border-0">
                                                     <td className="px-6 py-4 flex items-center gap-3">
                                                         {user.image && (
@@ -263,7 +268,7 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                                                     </td>
                                                     <td className="px-6 py-4 text-[#cbd5e1]">{user.email}</td>
                                                     <td className="px-6 py-4">
-                                                        <span className={`px-2 py-1 rounded text-xs font-medium ${user.role === 'super_admin'
+                                                        <span className={`whitespace-nowrap px-2 py-1 rounded text-xs font-medium ${user.role === 'super_admin'
                                                             ? 'bg-[#a1f65e]/20 text-[#a1f65e] border border-[#a1f65e]/30'
                                                             : user.role === 'admin'
                                                                 ? 'bg-[#d4af37]/20 text-[#d4af37]'
@@ -300,6 +305,6 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

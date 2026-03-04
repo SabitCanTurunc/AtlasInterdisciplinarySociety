@@ -18,7 +18,7 @@ export const translations = {
         common: {
             logoAlt: 'Atlas Logosu',
             logoAbbr: 'A.I.S.',
-            logoText: 'Atlas Disiplinlerarası Topluluğu',
+            logoText: 'Atlas Interdisciplinary Society',
             userAlt: 'Kullanıcı',
             toggleLanguage: 'Dili Değiştir',
         },
