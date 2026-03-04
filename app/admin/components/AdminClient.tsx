@@ -30,7 +30,7 @@ interface AdminClientProps {
 
 export default function AdminClient({ initialTab, currentUserEmail, users, projects, galleryItems, publications, events, sponsors }: AdminClientProps) {
     const [tab, setTab] = useState(initialTab);
-    const { t: allTranslations } = useLanguage();
+    const { t: allTranslations, language } = useLanguage();
     const t = allTranslations.admin;
 
     return (
@@ -323,7 +323,7 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                                                         </span>
                                                     </td>
                                                     <td className="px-6 py-4 text-[#64748b]">
-                                                        {new Date(user.createdAt).toLocaleDateString()}
+                                                        {new Date(user.createdAt).toLocaleDateString(language === 'en' ? 'en-US' : 'tr-TR')}
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         {user.role !== 'super_admin' && (

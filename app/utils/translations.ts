@@ -314,6 +314,23 @@ export const translations = {
                 ti: 'Mütercim Tercümanlık'
             }
         },
+        profile: {
+            title: 'Profilim',
+            role: 'Rol',
+            registrationDate: 'Kayıt Tarihi',
+            myEvents: 'Kayıtlı Olduğum Etkinlikler',
+            noEvents: 'Şu an için kayıtlı olduğunuz bir etkinlik bulunmuyor.',
+            upcomingEvents: 'Yaklaşan Etkinlikler',
+            pastEvents: 'Geçmiş Etkinlikler',
+            registered: 'Kayıtlısın',
+            completed: 'Tamamlandı',
+            changePhoto: 'Değiştir',
+            uploadError: 'Resim yüklenemedi.',
+            updateProfileError: 'Profil güncellenemedi.',
+            successPhoto: 'Profil fotoğrafı başarıyla güncellendi.',
+            uploading: 'Yükleniyor...',
+            superAdmin: 'Süper Admin'
+        },
         // Future sections can be added here
     },
     en: {
@@ -628,6 +645,23 @@ export const translations = {
                 iaed: 'Interior Architecture and Environmental Design',
                 ti: 'Translation and Interpreting'
             }
+        },
+        profile: {
+            title: 'My Profile',
+            role: 'Role',
+            registrationDate: 'Registration Date',
+            myEvents: 'My Registered Events',
+            noEvents: 'You are not registered for any events at particular moment.',
+            upcomingEvents: 'Upcoming Events',
+            pastEvents: 'Past Events',
+            registered: 'Registered',
+            completed: 'Completed',
+            changePhoto: 'Change',
+            uploadError: 'Failed to upload image.',
+            updateProfileError: 'Failed to update profile.',
+            successPhoto: 'Profile photo updated successfully.',
+            uploading: 'Uploading...',
+            superAdmin: 'Super Admin'
         },
         // Future sections can be added here
     }
