@@ -38,16 +38,16 @@ const Contact = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} id="iletisim" className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+    <section ref={sectionRef} id="iletisim" className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start snap-always">
       {/* Background */}
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 mix-blend-overlay"
           style={{ backgroundImage: "url('/images/general/ahtapot.jpeg')" }}
         />
         {/* Overlay for readability */}
-        <div className="absolute inset-0 bg-[#0a1628]/80" />
+        <div className="absolute inset-0 bg-transparent" />
       </div>
 
       {/* Gradient accent */}

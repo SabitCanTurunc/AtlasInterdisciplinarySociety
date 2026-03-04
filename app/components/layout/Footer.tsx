@@ -90,7 +90,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer ref={footerRef} className="relative" style={{ background: '#0a1628' }}>
+    <footer ref={footerRef} className="relative snap-end" style={{ background: '#0a1628' }}>
       {/* Top Accent Line */}
       <div className="footer-accent absolute top-0 left-0 right-0 h-[2px] origin-left"
         style={{ background: 'linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%)' }} />

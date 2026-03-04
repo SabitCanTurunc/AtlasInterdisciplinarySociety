@@ -68,9 +68,9 @@ const Gallery = () => {
     }, [images.length]);
 
     return (
-        <section ref={sectionRef} id="gallery" className="section-padding bg-[#0a1628] relative overflow-hidden text-white">
+        <section ref={sectionRef} id="gallery" className="section-padding bg-transparent relative overflow-hidden text-white min-h-screen flex flex-col justify-center snap-start snap-always">
             {/* Background Ambience */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#1e3a5f]/20 via-[#0a1628] to-[#0a1628] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#1e3a5f]/20 via-transparent to-transparent pointer-events-none" />
 
             <div className="container-custom relative z-10">
                 <div className="gallery-header text-center mb-16">

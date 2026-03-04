@@ -14,6 +14,8 @@ import DeleteGalleryImageButton from './DeleteGalleryImageButton';
 import DeletePublicationButton from './DeletePublicationButton';
 import TogglePublicationButton from './TogglePublicationButton';
 import ParticipantsModal from './ParticipantsModal';
+import SponsorForm from './SponsorForm';
+import DeleteSponsorButton from './DeleteSponsorButton';
 
 interface AdminClientProps {
     initialTab: string;
@@ -23,9 +25,10 @@ interface AdminClientProps {
     galleryItems: any[];
     publications: any[];
     events: any[];
+    sponsors: any[];
 }
 
-export default function AdminClient({ initialTab, currentUserEmail, users, projects, galleryItems, publications, events }: AdminClientProps) {
+export default function AdminClient({ initialTab, currentUserEmail, users, projects, galleryItems, publications, events, sponsors }: AdminClientProps) {
     const [tab, setTab] = useState(initialTab);
     const { t: allTranslations } = useLanguage();
     const t = allTranslations.admin;
@@ -51,14 +54,56 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                             <button onClick={() => setTab('publications')} className={`w-full text-left p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'publications' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>📚</span> {t.sidebar.publications}
                             </button>
-                            <button onClick={() => setTab('gallery')} className={`w-full text-left p-4 transition-all flex items-center gap-3 ${tab === 'gallery' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                            <button onClick={() => setTab('gallery')} className={`w-full text-left p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'gallery' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>🖼️</span> {t.sidebar.gallery}
+                            </button>
+                            <button onClick={() => setTab('sponsors')} className={`w-full text-left p-4 transition-all flex items-center gap-3 ${tab === 'sponsors' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                                <span>🤝</span> {t.sidebar.sponsors}
                             </button>
                         </div>
                     </div>
 
                     {/* Content Area */}
                     <div className="flex-1">
+                        {tab === 'sponsors' && (
+                            <div>
+                                <SponsorForm />
+
+                                <div className="bg-[#111d32] rounded-xl p-6 border border-[#1e3a5f] mt-8 mb-8 shadow-lg">
+                                    <h2 className="text-xl font-semibold mb-6 text-white">{t.sponsors.title}</h2>
+                                    {sponsors.length === 0 ? (
+                                        <p className="text-[#94a3b8] bg-[#0a1628] p-4 rounded-lg border border-[#1e3a5f]">{t.sponsors.empty}</p>
+                                    ) : (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                            {sponsors.map((sponsor) => (
+                                                <div key={sponsor._id.toString()} className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-4 relative group flex flex-col items-center">
+                                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                                        <DeleteSponsorButton sponsorId={sponsor._id.toString()} />
+                                                    </div>
+
+                                                    <div className="relative w-full h-24 rounded-md overflow-hidden bg-white mb-3 p-2 flex items-center justify-center">
+                                                        <Image
+                                                            src={sponsor.imageUrl}
+                                                            alt={sponsor.name}
+                                                            fill
+                                                            className="object-contain p-2"
+                                                        />
+                                                    </div>
+
+                                                    <h3 className="font-semibold text-white mb-1 w-full text-center line-clamp-1">{sponsor.name}</h3>
+                                                    {sponsor.websiteUrl && (
+                                                        <a href={sponsor.websiteUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-[#3b82f6] hover:underline w-full text-center truncate pr-2 pl-2">
+                                                            {sponsor.websiteUrl.replace(/^https?:\/\//, '')}
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
                         {tab === 'gallery' && (
                             <div>
                                 <GalleryForm />

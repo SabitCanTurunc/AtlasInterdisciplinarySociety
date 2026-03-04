@@ -77,6 +77,11 @@ export const translations = {
                 headline: 'Anılarımız',
                 desc: 'Birlikte başardığımız, eğlendiğimiz ve öğrendiğimiz anlardan kareler.'
             },
+            sponsors: {
+                label: 'Sponsorlarımız',
+                headline: 'Değerli Destekçilerimiz',
+                desc: 'Vizyonumuzu gerçeğe dönüştürmemizde katkı sağlayan tüm sponsorlarımıza teşekkür ederiz.'
+            },
             contact: {
                 headline: 'Bize Katıl',
                 desc: 'Geleceği şekillendirmek için ilk adımı at. A.I.S. ailesine katıl, fark yarat.',
@@ -153,7 +158,8 @@ export const translations = {
                 events: 'Etkinlik Yönetimi',
                 projects: 'Projeler',
                 publications: 'Yayın Yönetimi',
-                gallery: 'Galeri Yönetimi'
+                gallery: 'Galeri Yönetimi',
+                sponsors: 'Sponsor Yönetimi'
             },
             gallery: {
                 title: 'Galeri Görselleri',
@@ -172,6 +178,22 @@ export const translations = {
                 errorMsg: "Görsel yüklenirken bir hata oluştu.",
                 deleteConfirm: "Bu görseli silmek istediğinize emin misiniz?",
                 deleteBtn: "Görseli Sil"
+            },
+            sponsors: {
+                title: 'Sponsorlar',
+                empty: 'Henüz hiç sponsor eklenmemiş.',
+                addTitle: 'Yeni Sponsor Ekle',
+                sponsorName: 'Sponsor Adı',
+                sponsorImage: 'Sponsor Logosu',
+                sponsorWebsite: 'Web Sitesi (Opsiyonel)',
+                submitBtn: 'Sponsor Ekle',
+                addingBtn: 'Ekleniyor...',
+                deleteMsg: 'Bu sponsoru silmek istediğinize emin misiniz?',
+                cancelBtn: 'İptal',
+                confirmDeleteBtn: 'Evet, Sil',
+                successAdded: 'Sponsor başarıyla eklendi.',
+                deleteConfirm: 'Bu sponsoru silmek istediğinize emin misiniz?',
+                deleteBtn: 'Sponsoru Sil'
             },
             publications: {
                 title: 'Yayınlar Listesi',
@@ -370,6 +392,11 @@ export const translations = {
                 headline: 'Our Memories',
                 desc: 'Moments of what we achieved, enjoyed, and learned together.'
             },
+            sponsors: {
+                label: 'Our Sponsors',
+                headline: 'Our Valued Supporters',
+                desc: 'We thank all our sponsors who contribute to turning our vision into reality.'
+            },
             contact: {
                 headline: 'Join Us',
                 desc: 'Take the first step to shape the future. Join the A.I.S. family, make a difference.',
@@ -446,7 +473,8 @@ export const translations = {
                 events: 'Event Management',
                 projects: 'Projects',
                 publications: 'Publication Management',
-                gallery: 'Gallery Management'
+                gallery: 'Gallery Management',
+                sponsors: 'Sponsor Management'
             },
             gallery: {
                 title: 'Gallery Images',
@@ -465,6 +493,22 @@ export const translations = {
                 errorMsg: "An error occurred while uploading. Please try again.",
                 deleteConfirm: "Are you sure you want to delete this image?",
                 deleteBtn: "Delete Image"
+            },
+            sponsors: {
+                title: 'Sponsors',
+                empty: 'No sponsors added yet.',
+                addTitle: 'Add New Sponsor',
+                sponsorName: 'Sponsor Name',
+                sponsorImage: 'Sponsor Logo',
+                sponsorWebsite: 'Website (Optional)',
+                submitBtn: 'Add Sponsor',
+                addingBtn: 'Adding...',
+                deleteMsg: 'Are you sure you want to delete this sponsor?',
+                cancelBtn: 'Cancel',
+                confirmDeleteBtn: 'Yes, Delete',
+                successAdded: 'Sponsor successfully added.',
+                deleteConfirm: 'Are you sure you want to delete this sponsor?',
+                deleteBtn: 'Delete Sponsor'
             },
             publications: {
                 title: 'Publications List',

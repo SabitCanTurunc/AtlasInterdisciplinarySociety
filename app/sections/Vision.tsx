@@ -50,9 +50,9 @@ const Vision = () => {
   ];
 
   return (
-    <section ref={sectionRef} id="vizyon" className="section-padding relative overflow-hidden" style={{ background: '#0a1628' }}>
-      <div className="absolute top-0 right-0 w-1/2 h-full opacity-30"
-        style={{ background: 'radial-gradient(ellipse at top right, #111d32 0%, transparent 60%)' }} />
+    <section ref={sectionRef} id="vizyon" className="section-padding relative overflow-hidden bg-transparent min-h-screen flex items-center snap-start snap-always">
+      <div className="absolute top-0 right-0 w-1/2 h-full opacity-30 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at top right, rgba(17, 29, 50, 0.5) 0%, transparent 60%)' }} />
 
       <div className="container-custom relative z-10">
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-16 lg:gap-24 items-start">
@@ -82,11 +82,9 @@ const Vision = () => {
           {/* Right Content - Pillars */}
           <div className="pillars-grid space-y-6">
             {pillars.map((pillar, index) => (
-              <div key={index} className="pillar-card group p-6 rounded-xl border transition-all duration-300 hover:-translate-y-2"
-                style={{ background: '#111d32', borderColor: '#1a2744' }}>
+              <div key={index} className="pillar-card group p-6 rounded-xl border transition-all duration-300 hover:-translate-y-2 bg-white/5 border-white/10 backdrop-blur-sm">
                 <div className="flex items-start gap-5">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-[#d4af37]"
-                    style={{ background: '#1a2744' }}>
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-[#d4af37] bg-white/10">
                     <pillar.icon className="w-6 h-6 text-white" />
                   </div>
                   <div>

@@ -71,8 +71,7 @@ const Hero = () => {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen w-full overflow-hidden flex items-center"
-      style={{ background: 'linear-gradient(135deg, #0a1628 0%, #111d32 50%, #1e3a5f 100%)' }}
+      className="relative min-h-screen w-full overflow-hidden flex items-center bg-transparent snap-start snap-always"
     >
       {/* Gradient Orbs */}
       <div className="gradient-orb absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-[100px]"
@@ -138,8 +137,7 @@ const Hero = () => {
       </div>
 
       {/* Bottom gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, #0a1628, transparent)' }} />
+      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none bg-gradient-to-t from-black/20 to-transparent" />
     </section>
   );
 };
