@@ -32,10 +32,15 @@ const Navigation = ({ session }: { session: Session | null }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
+  // Close mobile menu and enforce home page scroll snap on route changes
   useEffect(() => {
-    // eslint-disable-next-line
     setIsMobileMenuOpen(false);
+
+    if (pathname === '/') {
+      document.documentElement.style.scrollSnapType = 'y mandatory';
+    } else {
+      document.documentElement.style.scrollSnapType = '';
+    }
   }, [pathname]);
 
   const navLinks = [
