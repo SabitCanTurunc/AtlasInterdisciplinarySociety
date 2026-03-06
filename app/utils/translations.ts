@@ -159,7 +159,8 @@ export const translations = {
                 projects: 'Projeler',
                 publications: 'Yayın Yönetimi',
                 gallery: 'Galeri Yönetimi',
-                sponsors: 'Sponsor Yönetimi'
+                sponsors: 'Sponsor Yönetimi',
+                team: 'Ekip Yönetimi'
             },
             gallery: {
                 title: 'Galeri Görselleri',
@@ -279,6 +280,26 @@ export const translations = {
                 roleUser: 'Üye',
                 actionRevoke: 'Yetkiyi Al',
                 actionGrant: 'Admin Yap'
+            },
+            team: {
+                title: 'Ekip Üyeleri',
+                empty: 'Henüz hiç ekip üyesi eklenmemiş.',
+                addTitle: 'Yeni Ekip Üyesi Ekle',
+                memberName: 'Ad Soyad',
+                memberRole: 'Görev / Rol',
+                memberFaculty: 'Fakülte (Opsiyonel)',
+                memberImage: 'Profil Fotoğrafı',
+                memberInstagram: 'Instagram Linki (Opsiyonel)',
+                memberTwitter: 'Twitter/X Linki (Opsiyonel)',
+                memberLinkedin: 'LinkedIn Linki (Opsiyonel)',
+                submitBtn: 'Ekip Üyesi Ekle',
+                addingBtn: 'Ekleniyor...',
+                deleteMsg: 'Bu ekip üyesini silmek istediğinize emin misiniz?',
+                cancelBtn: 'İptal',
+                confirmDeleteBtn: 'Evet, Sil',
+                successAdded: 'Ekip üyesi başarıyla eklendi.',
+                deleteConfirm: 'Bu ekip üyesini silmek istediğinize emin misiniz?',
+                deleteBtn: 'Üyeyi Sil'
             }
         },
         publications: {
@@ -491,7 +512,8 @@ export const translations = {
                 projects: 'Projects',
                 publications: 'Publication Management',
                 gallery: 'Gallery Management',
-                sponsors: 'Sponsor Management'
+                sponsors: 'Sponsor Management',
+                team: 'Team Management'
             },
             gallery: {
                 title: 'Gallery Images',
@@ -611,6 +633,26 @@ export const translations = {
                 roleUser: 'Member',
                 actionRevoke: 'Revoke Access',
                 actionGrant: 'Make Admin'
+            },
+            team: {
+                title: 'Team Members',
+                empty: 'No team members added yet.',
+                addTitle: 'Add New Team Member',
+                memberName: 'Full Name',
+                memberRole: 'Role',
+                memberFaculty: 'Faculty (Optional)',
+                memberImage: 'Profile Photo',
+                memberInstagram: 'Instagram Link (Optional)',
+                memberTwitter: 'Twitter/X Link (Optional)',
+                memberLinkedin: 'LinkedIn Link (Optional)',
+                submitBtn: 'Add Team Member',
+                addingBtn: 'Adding...',
+                deleteMsg: 'Are you sure you want to delete this team member?',
+                cancelBtn: 'Cancel',
+                confirmDeleteBtn: 'Yes, Delete',
+                successAdded: 'Team member successfully added.',
+                deleteConfirm: 'Are you sure you want to delete this team member?',
+                deleteBtn: 'Delete Member'
             }
         },
         publications: {

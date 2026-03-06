@@ -16,6 +16,9 @@ import TogglePublicationButton from './TogglePublicationButton';
 import ParticipantsModal from './ParticipantsModal';
 import SponsorForm from './SponsorForm';
 import DeleteSponsorButton from './DeleteSponsorButton';
+import TeamMemberForm from './TeamMemberForm';
+import DeleteTeamMemberButton from './DeleteTeamMemberButton';
+import { Instagram, Linkedin, Twitter } from 'lucide-react';
 
 interface AdminClientProps {
     initialTab: string;
@@ -26,9 +29,10 @@ interface AdminClientProps {
     publications: any[];
     events: any[];
     sponsors: any[];
+    teamMembers: any[];
 }
 
-export default function AdminClient({ initialTab, currentUserEmail, users, projects, galleryItems, publications, events, sponsors }: AdminClientProps) {
+export default function AdminClient({ initialTab, currentUserEmail, users, projects, galleryItems, publications, events, sponsors, teamMembers }: AdminClientProps) {
     const [tab, setTab] = useState(initialTab);
     const { t: allTranslations, language } = useLanguage();
     const t = allTranslations.admin;
@@ -57,8 +61,11 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                             <button onClick={() => setTab('gallery')} className={`w-full text-left p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'gallery' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>🖼️</span> {t.sidebar.gallery}
                             </button>
-                            <button onClick={() => setTab('sponsors')} className={`w-full text-left p-4 transition-all flex items-center gap-3 ${tab === 'sponsors' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                            <button onClick={() => setTab('sponsors')} className={`w-full text-left p-4 border-b border-[#1e3a5f] transition-all flex items-center gap-3 ${tab === 'sponsors' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
                                 <span>🤝</span> {t.sidebar.sponsors}
+                            </button>
+                            <button onClick={() => setTab('team')} className={`w-full text-left p-4 transition-all flex items-center gap-3 ${tab === 'team' ? 'bg-[#1a2744] text-white border-l-4 border-l-[#d4af37] font-medium' : 'text-[#94a3b8] hover:bg-[#1a2744]/50 border-l-4 border-l-transparent'}`}>
+                                <span>💼</span> {t.sidebar.team}
                             </button>
                         </div>
                     </div>
@@ -96,6 +103,69 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                                                             {sponsor.websiteUrl.replace(/^https?:\/\//, '')}
                                                         </a>
                                                     )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {tab === 'team' && (
+                            <div>
+                                <TeamMemberForm />
+
+                                <div className="bg-[#111d32] rounded-xl p-6 border border-[#1e3a5f] mt-8 mb-8 shadow-lg">
+                                    <h2 className="text-xl font-semibold mb-6 text-white">{t.team.title}</h2>
+                                    {teamMembers.length === 0 ? (
+                                        <p className="text-[#94a3b8] bg-[#0a1628] p-4 rounded-lg border border-[#1e3a5f]">{t.team.empty}</p>
+                                    ) : (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                            {teamMembers.map((member) => (
+                                                <div key={member._id.toString()} className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-4 relative group flex flex-col items-center">
+                                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                                        <DeleteTeamMemberButton memberId={member._id.toString()} />
+                                                    </div>
+
+                                                    <div className="relative w-24 h-24 rounded-full overflow-hidden mb-3 border-2 border-[#1e3a5f] bg-[#1a2744]">
+                                                        {member.imageUrl ? (
+                                                            <Image
+                                                                src={member.imageUrl}
+                                                                alt={member.name}
+                                                                fill
+                                                                className="object-cover"
+                                                                unoptimized
+                                                            />
+                                                        ) : (
+                                                            <div className="w-full h-full flex items-center justify-center text-3xl">🧑‍💼</div>
+                                                        )}
+                                                    </div>
+
+                                                    <h3 className="font-semibold text-white mb-1 w-full text-center line-clamp-1">{member.name}</h3>
+                                                    <p className="text-xs text-[#d4af37] w-full text-center line-clamp-1 mb-1">{member.role}</p>
+                                                    {member.faculty && (
+                                                        <p className="text-[10px] text-[#94a3b8] w-full text-center line-clamp-1 mb-3">
+                                                            {allTranslations.team.faculties[member.faculty as keyof typeof allTranslations.team.faculties] || member.faculty}
+                                                        </p>
+                                                    )}
+
+                                                    <div className="flex gap-4 mt-auto pt-4 pb-2">
+                                                        {member.instagram && (
+                                                            <a href={member.instagram} target="_blank" rel="noopener noreferrer" className="text-[#94a3b8] hover:text-[#d4af37] transition-colors">
+                                                                <Instagram size={18} />
+                                                            </a>
+                                                        )}
+                                                        {member.twitter && (
+                                                            <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="text-[#94a3b8] hover:text-[#d4af37] transition-colors">
+                                                                <Twitter size={18} />
+                                                            </a>
+                                                        )}
+                                                        {member.linkedin && (
+                                                            <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-[#94a3b8] hover:text-[#d4af37] transition-colors">
+                                                                <Linkedin size={18} />
+                                                            </a>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>

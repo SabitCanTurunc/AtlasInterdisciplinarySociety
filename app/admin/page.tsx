@@ -9,6 +9,7 @@ import Project from '@/lib/models/Project';
 import Gallery from '@/lib/models/Gallery';
 import Publication from '@/lib/models/Publication';
 import Sponsor from '@/lib/models/Sponsor';
+import TeamMember from '@/lib/models/TeamMember';
 import AdminClient from './components/AdminClient';
 
 type Props = {
@@ -33,12 +34,14 @@ export default async function AdminDashboard(props: Props) {
     const dbGallery = await Gallery.find({}).sort({ createdAt: -1 }).lean();
     const dbPublications = await Publication.find({}).sort({ createdAt: -1 }).lean();
     const dbSponsors = await Sponsor.find({}).sort({ createdAt: -1 }).lean();
+    const dbTeamMembers = await TeamMember.find({}).sort({ createdAt: -1 }).lean();
 
     const users = dbUsers.map(u => ({ ...u, _id: u._id.toString() }));
     const projects = dbProjects.map(p => ({ ...p, _id: p._id.toString() }));
     const galleryItems = dbGallery.map(g => ({ ...g, _id: g._id.toString() }));
     const publications = dbPublications.map(p => ({ ...p, _id: p._id.toString() }));
     const sponsors = dbSponsors.map(s => ({ ...s, _id: s._id.toString() }));
+    const teamMembers = dbTeamMembers.map(t => ({ ...t, _id: t._id.toString() }));
     const events = dbEvents.map(e => ({
         ...e,
         _id: e._id.toString(),
@@ -59,6 +62,7 @@ export default async function AdminDashboard(props: Props) {
             publications={publications}
             events={events}
             sponsors={sponsors}
+            teamMembers={teamMembers}
         />
     );
 }
