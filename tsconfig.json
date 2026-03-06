@@ -40,6 +40,10 @@
     "**/*.mts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/node 2",
+    "**/node 3",
+    "**/* 2",
+    "**/* 3"
   ]
 }
