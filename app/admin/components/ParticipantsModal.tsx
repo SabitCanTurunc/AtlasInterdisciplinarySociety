@@ -8,6 +8,9 @@ interface Participant {
     _id: string;
     name: string;
     email: string;
+    phoneNumber?: string;
+    school?: string;
+    department?: string;
 }
 
 interface Props {
@@ -15,13 +18,15 @@ interface Props {
 }
 
 export default function ParticipantsModal({ participants }: Props) {
-    const { t: allTranslations } = useLanguage();
+    const { t: allTranslations, language } = useLanguage();
     const t = allTranslations.admin.events;
     const [isOpen, setIsOpen] = useState(false);
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async () => {
-        const textToCopy = participants.map(p => `${p.name} <${p.email}>`).join('\n');
+        const textToCopy = participants.map(p =>
+            `${p.name} <${p.email}> | Tel: ${p.phoneNumber || '-'} | Okul: ${p.school || '-'} | Bölüm: ${p.department || '-'}`
+        ).join('\n');
         try {
             await navigator.clipboard.writeText(textToCopy);
             setCopied(true);
@@ -61,9 +66,16 @@ export default function ParticipantsModal({ participants }: Props) {
                             ) : (
                                 <ul className="space-y-3">
                                     {participants.map((p) => (
-                                        <li key={p._id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-[#0a1628] border border-[#1e3a5f]/50">
-                                            <span className="font-medium text-white text-sm">{p.name}</span>
-                                            <span className="text-[#a1f65e] text-xs font-mono break-all">{p.email}</span>
+                                        <li key={p._id} className="flex flex-col gap-1 p-3 rounded-lg bg-[#0a1628] border border-[#1e3a5f]/50">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full">
+                                                <span className="font-medium text-white text-sm">{p.name}</span>
+                                                <span className="text-[#a1f65e] text-xs font-mono break-all">{p.email}</span>
+                                            </div>
+                                            <div className="flex flex-col sm:flex-row gap-2 mt-2 text-xs text-[#94a3b8]">
+                                                <span>📱 {p.phoneNumber || '-'}</span>
+                                                <span className="hidden sm:inline">•</span>
+                                                <span>🎓 {p.school || '-'} ({p.department || '-'})</span>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -78,7 +90,7 @@ export default function ParticipantsModal({ participants }: Props) {
                                     className="flex items-center gap-2 px-4 py-2 bg-[#d4af37]/20 text-[#d4af37] rounded-lg hover:bg-[#d4af37]/30 transition-colors font-medium text-sm"
                                 >
                                     {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                                    {copied ? '✓' : t.copyEmailsList}
+                                    {copied ? (language === 'en' ? 'Copied' : 'Kopyalandı') : (language === 'en' ? 'Copy List' : 'Listeyi Kopyala')}
                                 </button>
                             </div>
                         )}

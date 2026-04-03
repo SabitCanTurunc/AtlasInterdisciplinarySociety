@@ -29,7 +29,7 @@ export default async function AdminDashboard(props: Props) {
 
     await connectToDatabase();
     const dbUsers = await User.find({}).sort({ createdAt: -1 }).lean();
-    const dbEvents = await Event.find({}).populate('participants', 'name email').sort({ date: 1 }).lean();
+    const dbEvents = await Event.find({}).populate('participants', 'name email phoneNumber school department').sort({ date: 1 }).lean();
     const dbProjects = await Project.find({}).sort({ createdAt: -1 }).lean();
     const dbGallery = await Gallery.find({}).sort({ createdAt: -1 }).lean();
     const dbPublications = await Publication.find({}).sort({ createdAt: -1 }).lean();
@@ -48,7 +48,10 @@ export default async function AdminDashboard(props: Props) {
         participants: e.participants?.map((p: any) => ({
             _id: p._id.toString(),
             name: p.name,
-            email: p.email
+            email: p.email,
+            phoneNumber: p.phoneNumber,
+            school: p.school,
+            department: p.department
         })) || []
     }));
 
