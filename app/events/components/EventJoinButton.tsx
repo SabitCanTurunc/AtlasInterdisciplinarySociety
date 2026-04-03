@@ -36,7 +36,13 @@ export default function EventJoinButton({ eventId, isParticipating: initialParti
                 setIsParticipating(data.isParticipating);
                 router.refresh();
             } else {
-                alert('Kayıt işlemi sırasında bir hata oluştu.');
+                const errorData = await res.json();
+                if (errorData.error === 'PHONE_REQUIRED') {
+                    alert(errorData.message);
+                    router.push('/profile');
+                } else {
+                    alert(errorData.message || 'Kayıt işlemi sırasında bir hata oluştu.');
+                }
             }
         } catch (error) {
             console.error(error);

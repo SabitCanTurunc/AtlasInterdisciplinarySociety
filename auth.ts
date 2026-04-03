@@ -7,8 +7,25 @@ import clientPromise from './lib/mongodb'; // We need a direct mongodb client fo
 import connectToDatabase from './lib/db';
 import User from './lib/models/User';
 
+const baseAdapter = MongoDBAdapter(clientPromise);
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
-    adapter: MongoDBAdapter(clientPromise),
+    adapter: {
+        ...baseAdapter,
+        createUser: async (profile) => {
+            await connectToDatabase();
+            const count = await User.countDocuments();
+
+            const userWithRole = {
+                ...profile,
+                role: count === 0 ? 'super_admin' : 'user',
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+
+            return await baseAdapter.createUser!(userWithRole);
+        }
+    },
     session: { strategy: 'jwt' },
     debug: true,
     providers: [
@@ -72,23 +89,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
             return session;
         },
-    },
-    events: {
-        createUser: async ({ user }) => {
-            // Check if this is the first user
-            await connectToDatabase();
-
-            // MongoDBAdapter bypasses Mongoose schemas, so we need to manually set timestamps
-            await User.findByIdAndUpdate(user.id, {
-                $setOnInsert: { createdAt: new Date(), updatedAt: new Date() }
-            }, { upsert: true });
-
-            const count = await User.countDocuments();
-            if (count === 1) {
-                // This is the first user (was just created, so count is 1)
-                await User.findByIdAndUpdate(user.id, { role: 'super_admin' });
-                console.log(`First user ${user.email} promoted to super_admin.`);
-            }
-        }
     }
 });

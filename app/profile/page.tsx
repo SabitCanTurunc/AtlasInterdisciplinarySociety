@@ -27,8 +27,9 @@ export default async function ProfilePage() {
     }).sort({ date: 1 }).lean();
 
     const formattedEvents = myEvents?.map((e: any) => ({
-        ...e,
         _id: e._id.toString(),
+        title: e.title,
+        date: e.date ? new Date(e.date).toISOString() : new Date().toISOString(),
     })) || [];
 
     // Separate upcoming vs past for better display
@@ -38,9 +39,12 @@ export default async function ProfilePage() {
 
     return (
         <div className="pt-32 pb-20 min-h-screen bg-[#0a1628] text-white">
-            <div className="container-custom max-w-4xl mx-auto">
+            <div className="container-custom max-w-6xl mx-auto">
                 <ProfileClient
                     initialImage={dbUser.image}
+                    initialPhoneNumber={dbUser.phoneNumber}
+                    initialSchool={dbUser.school}
+                    initialDepartment={dbUser.department}
                     name={dbUser.name}
                     email={dbUser.email}
                     role={dbUser.role}

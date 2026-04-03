@@ -18,6 +18,15 @@ const UserSchema = new Schema(
         image: {
             type: String,
         },
+        phoneNumber: {
+            type: String,
+        },
+        school: {
+            type: String,
+        },
+        department: {
+            type: String,
+        },
         role: {
             type: String,
             enum: ['user', 'admin', 'super_admin'],

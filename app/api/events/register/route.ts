@@ -28,6 +28,13 @@ export async function POST(request: Request) {
             return NextResponse.json({ message: 'Kullanıcı bulunamadı.' }, { status: 404 });
         }
 
+        if (!user.phoneNumber || user.phoneNumber.replace(/\D/g, '').length < 10) {
+            return NextResponse.json({
+                error: 'PHONE_REQUIRED',
+                message: 'Etkinliğe kaydolmak için profilinizden telefon numaranızı eklemelisiniz.'
+            }, { status: 403 });
+        }
+
         const event = await Event.findById(eventId);
 
         if (!event) {

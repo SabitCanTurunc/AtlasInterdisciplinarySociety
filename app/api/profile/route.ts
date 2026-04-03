@@ -12,17 +12,24 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { imageUrl } = body;
+        const { imageUrl, phoneNumber, school, department } = body;
 
-        if (!imageUrl) {
-            return NextResponse.json({ message: 'Resim URLsi gerekli.' }, { status: 400 });
+        // If all are undefined, then there's nothing to update
+        if (imageUrl === undefined && phoneNumber === undefined && school === undefined && department === undefined) {
+            return NextResponse.json({ message: 'Güncellenecek veri bulunamadı.' }, { status: 400 });
         }
+
+        const updateData: any = {};
+        if (imageUrl !== undefined) updateData.image = imageUrl;
+        if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+        if (school !== undefined) updateData.school = school;
+        if (department !== undefined) updateData.department = department;
 
         await connectToDatabase();
 
         const updatedUser = await User.findOneAndUpdate(
             { email: session.user.email },
-            { image: imageUrl },
+            { $set: updateData },
             { new: true } // Returns the updated document
         );
 
@@ -30,7 +37,13 @@ export async function POST(request: Request) {
             return NextResponse.json({ message: 'Kullanıcı bulunamadı.' }, { status: 404 });
         }
 
-        return NextResponse.json({ message: 'Profil fotoğrafı güncellendi.', image: updatedUser.image }, { status: 200 });
+        return NextResponse.json({
+            message: 'Profiliniz başarıyla güncellendi.',
+            image: updatedUser.image,
+            phoneNumber: updatedUser.phoneNumber,
+            school: updatedUser.school,
+            department: updatedUser.department
+        }, { status: 200 });
 
     } catch (error: any) {
         console.error('Profile update error:', error);

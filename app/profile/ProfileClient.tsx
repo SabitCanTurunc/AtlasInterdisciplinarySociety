@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Loader2, Camera } from 'lucide-react';
+import { Loader2, Camera, Pencil, Check, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/app/context/LanguageContext';
 
@@ -15,6 +15,9 @@ interface EventType {
 
 interface ProfileClientProps {
     initialImage?: string;
+    initialPhoneNumber?: string;
+    initialSchool?: string;
+    initialDepartment?: string;
     name: string;
     email: string;
     role: string;
@@ -23,13 +26,57 @@ interface ProfileClientProps {
     pastEvents: EventType[];
 }
 
-export default function ProfileClient({ initialImage, name, email, role, createdAt, upcomingEvents, pastEvents }: ProfileClientProps) {
+export default function ProfileClient({ initialImage, initialPhoneNumber, initialSchool, initialDepartment, name, email, role, createdAt, upcomingEvents, pastEvents }: ProfileClientProps) {
     const router = useRouter();
     const { t: allTranslations, language } = useLanguage();
     const t = allTranslations.profile;
 
     const [image, setImage] = useState(initialImage);
     const [uploading, setUploading] = useState(false);
+
+    const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber || '');
+    const [school, setSchool] = useState(initialSchool || '');
+    const [department, setDepartment] = useState(initialDepartment || '');
+    const [isEditing, setIsEditing] = useState(false);
+    const [savingDetails, setSavingDetails] = useState(false);
+
+    const handleSaveDetails = async () => {
+        if (!phoneNumber || phoneNumber.replace(/\D/g, '').length < 10) {
+            toast.error(language === 'en' ? 'Please enter a valid phone number' : 'Lütfen geçerli bir telefon numarası girin');
+            return;
+        }
+        if (!school || school.trim().length === 0) {
+            toast.error(language === 'en' ? 'Please enter your school' : 'Lütfen okulunuzu girin');
+            return;
+        }
+        if (!department || department.trim().length === 0) {
+            toast.error(language === 'en' ? 'Please enter your department' : 'Lütfen bölümünüzü girin');
+            return;
+        }
+
+        setSavingDetails(true);
+        try {
+            const res = await fetch('/api/profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phoneNumber, school, department }),
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                throw new Error(data.message || 'Error saving details');
+            }
+
+            toast.success(language === 'en' ? 'Profile details updated successfully' : 'Kişisel bilgiler başarıyla güncellendi');
+            setIsEditing(false);
+            router.refresh();
+        } catch (err: any) {
+            console.error('Details update error:', err);
+            toast.error(err.message || 'Bir hata oluştu.');
+        } finally {
+            setSavingDetails(false);
+        }
+    };
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || !e.target.files[0]) return;
@@ -131,6 +178,93 @@ export default function ProfileClient({ initialImage, name, email, role, created
                                     <span className="text-sm font-medium text-[#d4af37] capitalize">
                                         {role === 'super_admin' ? t.superAdmin : role}
                                     </span>
+                                </div>
+                                <div className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-3 flex flex-col gap-3">
+                                    <div className="flex justify-between items-center border-b border-[#1e3a5f]/50 pb-2 mb-1">
+                                        <span className="text-sm font-semibold text-[#64748b] uppercase tracking-wider">{language === 'en' ? 'Personal Details' : 'Kişisel Bilgiler'}</span>
+                                        {!isEditing && (
+                                            <button
+                                                onClick={() => setIsEditing(true)}
+                                                className="text-[#d4af37] p-1.5 rounded-full hover:bg-[#111d32] transition-colors"
+                                            >
+                                                <Pencil className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                        {isEditing && (
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={handleSaveDetails}
+                                                    disabled={savingDetails}
+                                                    className="bg-[#d4af37]/20 text-[#d4af37] p-1.5 rounded-full hover:bg-[#d4af37]/30 transition-colors disabled:opacity-50"
+                                                >
+                                                    {savingDetails ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setIsEditing(false);
+                                                        setPhoneNumber(initialPhoneNumber || '');
+                                                        setSchool(initialSchool || '');
+                                                        setDepartment(initialDepartment || '');
+                                                    }}
+                                                    disabled={savingDetails}
+                                                    className="bg-red-500/20 text-red-500 p-1.5 rounded-full hover:bg-red-500/30 transition-colors disabled:opacity-50"
+                                                >
+                                                    <X className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-xs text-[#94a3b8]">{language === 'en' ? 'Phone Number' : 'Telefon Numarası'}</span>
+                                        {isEditing ? (
+                                            <input
+                                                type="tel"
+                                                value={phoneNumber}
+                                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                                placeholder="05xxxxxxxxx"
+                                                className="bg-[#111d32] border border-[#1e3a5f] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#d4af37]"
+                                            />
+                                        ) : (
+                                            <span className={`text-sm font-medium ${phoneNumber ? 'text-white' : 'text-red-400'}`}>
+                                                {phoneNumber || (language === 'en' ? 'Missing' : 'Eksik')}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-xs text-[#94a3b8]">{language === 'en' ? 'School / University' : 'Okul / Üniversite'}</span>
+                                        {isEditing ? (
+                                            <input
+                                                type="text"
+                                                value={school}
+                                                onChange={(e) => setSchool(e.target.value)}
+                                                placeholder={language === 'en' ? 'Your University' : 'Üniversiteniz'}
+                                                className="bg-[#111d32] border border-[#1e3a5f] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#d4af37]"
+                                            />
+                                        ) : (
+                                            <span className={`text-sm font-medium ${school ? 'text-white' : 'text-red-400'}`}>
+                                                {school || (language === 'en' ? 'Missing' : 'Eksik')}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-xs text-[#94a3b8]">{language === 'en' ? 'Department' : 'Bölüm'}</span>
+                                        {isEditing ? (
+                                            <input
+                                                type="text"
+                                                value={department}
+                                                onChange={(e) => setDepartment(e.target.value)}
+                                                placeholder={language === 'en' ? 'Your Department' : 'Bölümünüz'}
+                                                className="bg-[#111d32] border border-[#1e3a5f] rounded px-2 py-1 text-sm text-white focus:outline-none focus:border-[#d4af37]"
+                                            />
+                                        ) : (
+                                            <span className={`text-sm font-medium ${department ? 'text-white' : 'text-red-400'}`}>
+                                                {department || (language === 'en' ? 'Missing' : 'Eksik')}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-3 flex justify-between items-center">
                                     <span className="text-sm text-[#94a3b8]">{t.registrationDate}</span>
