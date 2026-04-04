@@ -22,11 +22,11 @@ export default async function EventsPage() {
     // Fetch all events sorted by date ascending
     const dbEvents = await Event.find({}).sort({ date: 1 }).lean();
 
-    const allEvents = dbEvents.map(e => ({
+    const allEvents = dbEvents.map(e => JSON.parse(JSON.stringify({
         ...e,
         _id: e._id.toString(),
         participants: e.participants?.map((p: any) => p.toString()) || []
-    }));
+    })));
 
     const now = new Date();
 

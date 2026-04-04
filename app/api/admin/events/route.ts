@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { title, description, date, endDate, location, locationLink, imageUrl, requiresRegistration } = body;
+        const { title, description, date, endDate, location, locationLink, imageUrl, requiresRegistration, speakers } = body;
 
         if (!title || !description || !date || !location) {
             return NextResponse.json({ message: 'Lütfen zorunlu alanları doldurun.' }, { status: 400 });
@@ -31,6 +31,7 @@ export async function POST(request: Request) {
             locationLink,
             imageUrl,
             requiresRegistration: Boolean(requiresRegistration),
+            speakers: Array.isArray(speakers) ? speakers : [],
         });
 
         revalidatePath('/admin');
@@ -82,7 +83,7 @@ export async function PUT(request: Request) {
         }
 
         const body = await request.json();
-        const { id, title, description, date, endDate, location, locationLink, imageUrl, requiresRegistration } = body;
+        const { id, title, description, date, endDate, location, locationLink, imageUrl, requiresRegistration, speakers } = body;
 
         if (!id || !title || !description || !date || !location) {
             return NextResponse.json({ message: 'Lütfen zorunlu alanları doldurun.' }, { status: 400 });
@@ -99,6 +100,7 @@ export async function PUT(request: Request) {
             locationLink,
             imageUrl,
             requiresRegistration: Boolean(requiresRegistration),
+            speakers: Array.isArray(speakers) ? speakers : [],
         }, { new: true });
 
         if (!updatedEvent) {

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, UploadCloud, CalendarIcon, Pencil } from 'lucide-react';
+import { Loader2, UploadCloud, CalendarIcon, Pencil, User } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/app/context/LanguageContext';
 import { format } from 'date-fns';
@@ -44,6 +44,10 @@ export default function EditEventModal({ event }: { event: any }) {
 
     const [startTime, setStartTime] = useState(getHHMM(initialStartDate));
     const [endTime, setEndTime] = useState(initialEndDate ? getHHMM(initialEndDate) : "00:00");
+
+    const [speakers, setSpeakers] = useState<{ name: string, title: string, imageUrl: string, imageFile?: File | null }[]>(
+        event.speakers?.map((s: any) => ({ name: s.name, title: s.title, imageUrl: s.imageUrl || '', imageFile: null })) || []
+    );
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const value = e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value;
@@ -102,6 +106,18 @@ export default function EditEventModal({ event }: { event: any }) {
                 endDateObj.setHours(endHour, endMinute);
             }
 
+            const speakersWithUrls = await Promise.all(speakers.map(async (s) => {
+                if (s.imageFile) {
+                    const uploadData = new FormData();
+                    uploadData.append('file', s.imageFile);
+                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadData });
+                    if (!uploadRes.ok) throw new Error('Konuşmacı resmi yüklenemedi');
+                    const uploadResult = await uploadRes.json();
+                    return { name: s.name, title: s.title, imageUrl: uploadResult.url };
+                }
+                return { name: s.name, title: s.title, imageUrl: s.imageUrl };
+            }));
+
             const res = await fetch('/api/admin/events', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -110,7 +126,8 @@ export default function EditEventModal({ event }: { event: any }) {
                     id: event._id.toString(),
                     date: startDate.toISOString(),
                     endDate: endDateObj ? endDateObj.toISOString() : undefined,
-                    imageUrl: uploadedImageUrl
+                    imageUrl: uploadedImageUrl,
+                    speakers: speakersWithUrls
                 }),
             });
 
@@ -292,6 +309,94 @@ export default function EditEventModal({ event }: { event: any }) {
                                 />
                                 Kayıt Gereklidir
                             </label>
+                        </div>
+
+                        <div className="md:col-span-2 mt-2 p-4 border border-[#1e3a5f] rounded-lg bg-[#0a1628]">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-sm font-semibold text-white">Konuşmacılar / Konuklar</h3>
+                                <button
+                                    type="button"
+                                    onClick={() => setSpeakers([...speakers, { name: '', title: '', imageUrl: '', imageFile: null }])}
+                                    className="text-xs bg-[#1a2744] hover:bg-[#1e3a5f] text-[#cbd5e1] hover:text-white py-1 px-3 rounded-lg border border-[#1e3a5f] transition-colors"
+                                >
+                                    + Konuşmacı Ekle
+                                </button>
+                            </div>
+
+                            {speakers.length === 0 ? (
+                                <p className="text-xs text-[#64748b]">Etkinliğe henüz konuşmacı eklenmedi.</p>
+                            ) : (
+                                <div className="space-y-3">
+                                    {speakers.map((speaker, index) => (
+                                        <div key={index} className="flex flex-col sm:flex-row gap-4 p-3 border border-[#1e3a5f] rounded-lg bg-[#111d32] relative">
+                                            <button
+                                                type="button"
+                                                onClick={() => setSpeakers(speakers.filter((_, i) => i !== index))}
+                                                className="absolute top-2 right-2 text-[#94a3b8] hover:text-red-500 transition-colors"
+                                                title="Kaldır"
+                                            >
+                                                ✕
+                                            </button>
+
+                                            <div className="w-full sm:w-16 shrink-0 flex flex-col items-center gap-2">
+                                                <div className="w-12 h-12 rounded-full bg-[#0a1628] border border-[#1e3a5f] overflow-hidden flex items-center justify-center shrink-0">
+                                                    {(speaker.imageUrl || speaker.imageFile) ? (
+                                                        <img src={speaker.imageFile ? URL.createObjectURL(speaker.imageFile) : speaker.imageUrl} alt="preview" className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <User className="w-5 h-5 text-[#64748b]" />
+                                                    )}
+                                                </div>
+                                                <label className="cursor-pointer text-[9px] text-[#d4af37] hover:underline text-center">
+                                                    Fotoğraf
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => {
+                                                            if (e.target.files && e.target.files[0]) {
+                                                                const newSpeakers = [...speakers];
+                                                                newSpeakers[index].imageFile = e.target.files[0];
+                                                                setSpeakers(newSpeakers);
+                                                            }
+                                                        }}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                            </div>
+
+                                            <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3 pr-6">
+                                                <div>
+                                                    <label className="block text-[10px] text-[#cbd5e1] mb-1">İsim Soyisim</label>
+                                                    <input
+                                                        type="text"
+                                                        value={speaker.name}
+                                                        onChange={(e) => {
+                                                            const newSpeakers = [...speakers];
+                                                            newSpeakers[index].name = e.target.value;
+                                                            setSpeakers(newSpeakers);
+                                                        }}
+                                                        className="w-full bg-[#0a1628] border border-[#1e3a5f] rounded py-1 px-2 text-xs text-white focus:outline-none focus:border-[#d4af37]"
+                                                        required
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-[10px] text-[#cbd5e1] mb-1">Ünvan / Çalıştığı Yer</label>
+                                                    <input
+                                                        type="text"
+                                                        value={speaker.title}
+                                                        onChange={(e) => {
+                                                            const newSpeakers = [...speakers];
+                                                            newSpeakers[index].title = e.target.value;
+                                                            setSpeakers(newSpeakers);
+                                                        }}
+                                                        className="w-full bg-[#0a1628] border border-[#1e3a5f] rounded py-1 px-2 text-xs text-white focus:outline-none focus:border-[#d4af37]"
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
 

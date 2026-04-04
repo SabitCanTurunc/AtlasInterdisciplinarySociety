@@ -2,6 +2,7 @@
 
 import { Calendar, MapPin, Clock } from 'lucide-react';
 import EventJoinButton from './EventJoinButton';
+import Link from 'next/link';
 import { useLanguage } from '@/app/context/LanguageContext';
 
 export default function EventsClient({ upcomingEvents, pastEvents, sessionUserObjectId, sessionExists }: any) {
@@ -140,6 +141,9 @@ const EventCard = ({ event, isPast, sessionUserObjectId, sessionExists, badgeTex
                         <span className="line-clamp-1">{event.location}</span>
                     )}
                 </div>
+                <Link href={`/events/${event._id}`} className="block w-full text-center text-sm font-medium text-white bg-[#1a2744] hover:bg-[#1e3a5f] py-2 rounded-lg border border-[#1e3a5f] transition-colors mt-4">
+                    Detayları Görüntüle
+                </Link>
                 {event.requiresRegistration && (
                     <div className="px-6 pb-6 mt-auto">
                         <EventJoinButton

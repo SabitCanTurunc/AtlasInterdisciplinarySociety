@@ -11,6 +11,7 @@ export interface IEvent extends Document {
     requiresRegistration: boolean;
     participants: mongoose.Types.ObjectId[];
     endDate?: Date;
+    speakers?: { name: string; title: string; imageUrl?: string }[];
 }
 
 const eventSchema: Schema = new mongoose.Schema({
@@ -50,6 +51,11 @@ const eventSchema: Schema = new mongoose.Schema({
     participants: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+    }],
+    speakers: [{
+        name: String,
+        title: String,
+        imageUrl: String
     }]
 });
 
