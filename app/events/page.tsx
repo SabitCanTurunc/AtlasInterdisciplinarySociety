@@ -31,7 +31,7 @@ export default async function EventsPage() {
     const now = new Date();
 
     // Categorize events
-    const upcomingEvents = allEvents.filter(event => new Date(event.date) >= now);
+    const upcomingEvents = allEvents.filter(event => new Date(event.endDate || event.date) >= now);
     // For past events, we might want them sorted descending (newest past event first)
     const pastEvents = allEvents.filter(event => new Date(event.date) < now).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 

@@ -9,6 +9,7 @@ import ProjectForm from './ProjectForm';
 import GalleryForm from './GalleryForm';
 import PublicationForm from './PublicationForm';
 import DeleteEventButton from './DeleteEventButton';
+import EditEventModal from './EditEventModal';
 import DeleteProjectButton from './DeleteProjectButton';
 import DeleteGalleryImageButton from './DeleteGalleryImageButton';
 import DeletePublicationButton from './DeletePublicationButton';
@@ -312,15 +313,31 @@ export default function AdminClient({ initialTab, currentUserEmail, users, proje
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                             {events.map((event) => (
                                                 <div key={event._id.toString()} className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-4 relative group">
-                                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 z-10">
+                                                        <EditEventModal event={event} />
                                                         <DeleteEventButton eventId={event._id.toString()} />
                                                     </div>
-                                                    <h3 className="font-semibold text-white mb-1 pr-8">{event.title}</h3>
-                                                    <p className="text-xs text-[#d4af37] mb-2">
-                                                        {new Date(event.date).toLocaleString('tr-TR', {
-                                                            day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-                                                        })}
-                                                    </p>
+                                                    <h3 className="font-semibold text-white mb-1 pr-16">{event.title}</h3>
+                                                    <div className="flex flex-col gap-1 mb-2">
+                                                        <p className="text-xs text-[#d4af37] flex items-center gap-1">
+                                                            📅 {new Date(event.date).toLocaleString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                                            {event.endDate && new Date(event.date).toDateString() !== new Date(event.endDate).toDateString() && (
+                                                                <>
+                                                                    {' - '}
+                                                                    {new Date(event.endDate).toLocaleString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                                                </>
+                                                            )}
+                                                        </p>
+                                                        <p className="text-xs text-[#d4af37] flex items-center gap-1">
+                                                            ⏰ {new Date(event.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                                                            {event.endDate && (
+                                                                <>
+                                                                    {' - '}
+                                                                    {new Date(event.endDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                                                                </>
+                                                            )}
+                                                        </p>
+                                                    </div>
                                                     <p className="text-sm text-[#cbd5e1] mb-2 line-clamp-2">{event.description}</p>
                                                     <p className="text-xs text-[#94a3b8] flex items-center gap-1 mb-2">
                                                         📍 {event.locationLink ? (

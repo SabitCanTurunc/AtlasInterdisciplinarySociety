@@ -10,6 +10,7 @@ export interface IEvent extends Document {
     createdAt: Date;
     requiresRegistration: boolean;
     participants: mongoose.Types.ObjectId[];
+    endDate?: Date;
 }
 
 const eventSchema: Schema = new mongoose.Schema({
@@ -24,6 +25,9 @@ const eventSchema: Schema = new mongoose.Schema({
     date: {
         type: Date,
         required: [true, 'Etkinlik tarihi zorunludur.'],
+    },
+    endDate: {
+        type: Date,
     },
     location: {
         type: String,

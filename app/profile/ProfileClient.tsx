@@ -11,6 +11,7 @@ interface EventType {
     _id: string;
     title: string;
     date: string | Date;
+    endDate?: string | Date;
 }
 
 interface ProfileClientProps {
@@ -291,7 +292,13 @@ export default function ProfileClient({ initialImage, initialPhoneNumber, initia
                                                 <div key={event._id.toString()} className="bg-[#0a1628] border border-[#1e3a5f] rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                                     <div>
                                                         <h4 className="font-semibold">{event.title}</h4>
-                                                        <p className="text-xs text-[#94a3b8] mt-1">🗓️ {new Date(event.date).toLocaleDateString(language === 'en' ? 'en-US' : 'tr-TR')}</p>
+                                                        <p className="text-xs text-[#94a3b8] mt-1">
+                                                            🗓️ {new Date(event.date).toLocaleDateString(language === 'en' ? 'en-US' : 'tr-TR')}
+                                                            {event.endDate && new Date(event.date).toDateString() !== new Date(event.endDate).toDateString() && ` - ${new Date(event.endDate).toLocaleDateString(language === 'en' ? 'en-US' : 'tr-TR')}`}
+                                                            {' • ⏰ '}
+                                                            {new Date(event.date).toLocaleTimeString(language === 'en' ? 'en-US' : 'tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                                                            {event.endDate && ` - ${new Date(event.endDate).toLocaleTimeString(language === 'en' ? 'en-US' : 'tr-TR', { hour: '2-digit', minute: '2-digit' })}`}
+                                                        </p>
                                                     </div>
                                                     <span className="text-xs bg-[#1e3a5f] text-white px-3 py-1 rounded-full whitespace-nowrap self-start sm:self-auto">{t.registered}</span>
                                                 </div>
@@ -308,7 +315,13 @@ export default function ProfileClient({ initialImage, initialPhoneNumber, initia
                                                 <div key={event._id.toString()} className="bg-[#1a2744]/50 border border-[#1e3a5f]/50 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 opacity-70">
                                                     <div>
                                                         <h4 className="font-medium text-[#cbd5e1]">{event.title}</h4>
-                                                        <p className="text-xs text-[#64748b] mt-1">🗓️ {new Date(event.date).toLocaleDateString(language === 'en' ? 'en-US' : 'tr-TR')}</p>
+                                                        <p className="text-xs text-[#64748b] mt-1">
+                                                            🗓️ {new Date(event.date).toLocaleDateString(language === 'en' ? 'en-US' : 'tr-TR')}
+                                                            {event.endDate && new Date(event.date).toDateString() !== new Date(event.endDate).toDateString() && ` - ${new Date(event.endDate).toLocaleDateString(language === 'en' ? 'en-US' : 'tr-TR')}`}
+                                                            {' • ⏰ '}
+                                                            {new Date(event.date).toLocaleTimeString(language === 'en' ? 'en-US' : 'tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                                                            {event.endDate && ` - ${new Date(event.endDate).toLocaleTimeString(language === 'en' ? 'en-US' : 'tr-TR', { hour: '2-digit', minute: '2-digit' })}`}
+                                                        </p>
                                                     </div>
                                                     <span className="text-xs bg-[#0a1628] text-[#94a3b8] px-3 py-1 rounded-full whitespace-nowrap self-start sm:self-auto">{t.completed}</span>
                                                 </div>

@@ -104,13 +104,31 @@ const EventCard = ({ event, isPast, sessionUserObjectId, sessionExists, badgeTex
             </p>
 
             <div className="space-y-2 mt-auto pt-4 border-t border-gray-100">
-                <div className="flex items-center gap-2 text-sm text-[#64748b]">
-                    <Clock className="w-4 h-4 text-[#d4af37]" />
-                    <span>
-                        {new Date(event.date).toLocaleString('tr-TR', {
-                            day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-                        })}
-                    </span>
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2 text-sm text-[#64748b]">
+                        <Calendar className="w-4 h-4 text-[#d4af37]" />
+                        <span>
+                            {new Date(event.date).toLocaleString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                            {event.endDate && new Date(event.date).toDateString() !== new Date(event.endDate).toDateString() && (
+                                <>
+                                    {' - '}
+                                    {new Date(event.endDate).toLocaleString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                </>
+                            )}
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-[#64748b]">
+                        <Clock className="w-4 h-4 text-[#d4af37]" />
+                        <span>
+                            {new Date(event.date).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                            {event.endDate && (
+                                <>
+                                    {' - '}
+                                    {new Date(event.endDate).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                                </>
+                            )}
+                        </span>
+                    </div>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#64748b]">
                     <MapPin className="w-4 h-4 text-[#d4af37]" />
